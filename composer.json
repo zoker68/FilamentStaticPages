@@ -1,0 +1,29 @@
+{
+    "name": "zoker/filament-static-pages",
+    "description": "Simple plugin for static pages",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Zoker68\\FilamentStaticPages\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maksim Martynov",
+            "email": "zokermm@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.3",
+        "filament/support": "^3.2",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zoker68\\FilamentStaticPages\\FilamentStaticPagesServiceProvider"
+            ]
+        }
+    }
+}
