@@ -10,6 +10,11 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name('filament-static-pages')
-            ->hasViews();
+            ->hasViews()
+            ->hasMigration(
+                '0001_01_01_000001_create_zoker_pages_pages_table',
+            )
+            ->runsMigrations();
+
     }
 }

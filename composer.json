@@ -4,7 +4,7 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Zoker68\\FilamentStaticPages\\": "src/"
+            "Zoker\\FilamentStaticPages\\": "src/"
         }
     },
     "authors": [
@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zoker68\\FilamentStaticPages\\FilamentStaticPagesServiceProvider"
+                "Zoker\\FilamentStaticPages\\FilamentStaticPagesServiceProvider"
             ]
         }
     }
