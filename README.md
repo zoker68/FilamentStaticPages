@@ -31,6 +31,17 @@ php artisan vendor:publish --tag=filament-static-pages-components
 php artisan vendor:publish --tag=filament-static-pages-migrations
 ```
 
+## Migrations
+
+```bash
+php artisan migrate
+```
+
+## Add to Filament Service Provider
+```php
+->plugin(StaticPages::make())
+```
+
 # New Component:
 
 - In directory `app/View/Components` create new component
