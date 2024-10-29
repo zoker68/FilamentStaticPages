@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('url');
             $table->string('layout');
+            $table->boolean('published')->default(true);
             $table->timestamps();
         });
     }

@@ -19,8 +19,7 @@ class StaticPages implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel->resources([
-        ]);
+        $panel->discoverResources(in: __DIR__ . '/../src/Filament/Resources', for: 'Zoker\\FilamentStaticPages\\Filament\\Resources');
     }
 
     public function boot(Panel $panel): void {}
