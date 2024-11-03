@@ -13,7 +13,6 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
     {
         $package->name('filament-static-pages')
             ->hasViews()
-            ->hasRoute('web')
             ->hasConfigFile()
             ->hasViews()
             ->hasViewComponents('fsp',
@@ -24,5 +23,10 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
                 'create_zoker_pages_pages_table',
                 'create_zoker_pages_blocks_table',
             ]);
+    }
+
+    public function bootingPackage()
+    {
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 }
