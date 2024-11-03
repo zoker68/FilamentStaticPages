@@ -62,7 +62,7 @@ class PageResource extends Resource
                                     ->label('URL')
                                     ->required()
                                     ->prefix(function (): string {
-                                        return route('filament-static-pages.page', ['page' => '/']) . '/';
+                                        return route('filament-static-pages.page', ['fallbackPlaceholder' => '/']) . '/';
                                     })
                                     ->unique(ignoreRecord: true),
 
@@ -159,7 +159,7 @@ class PageResource extends Resource
                     ->label('URL')
                     ->searchable()
                     ->sortable()
-                    ->url(fn (Page $record) => route('filament-static-pages.page', $record))
+                    ->url(fn (Page $record) => route('filament-static-pages.page', $record->url))
                     ->openUrlInNewTab(),
 
                 ToggleColumn::make('published')

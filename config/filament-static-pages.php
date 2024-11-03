@@ -9,7 +9,7 @@ return [
      *
      * @var string
      */
-    'route_prefix' => 'static',
+    'route_prefix' => '',
 
     /**
      * The default layout to use for static pages.
