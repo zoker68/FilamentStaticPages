@@ -31,7 +31,6 @@ class PartnersBlock extends BlockComponent
             FileUpload::make('data.attachments')
                 ->multiple()
                 ->image()
-                ->disk(config('shop.disk'))
                 ->imageEditor()
                 ->panelLayout('grid')
                 ->reorderable()
