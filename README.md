@@ -50,13 +50,8 @@ namespace App\View\Components;
 
 class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 {
-    public function __construct(public array $data) {}
-
-    public function render()
-    {
-        return view('components.text', ['data' => $this->data]);
-    }
-
+    public static string $view = 'components.text'; 
+    
     public static function getSchema()
     {
         return [
@@ -70,6 +65,11 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 - You can add label to component (optional)
 ```php
     public static string $label = 'Text Block';
+```
+
+- Set view for component
+```php
+    public static string $view = 'components.text';
 ```
 
 - Register component in ServiceProvider

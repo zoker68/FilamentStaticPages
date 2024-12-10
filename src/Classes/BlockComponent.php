@@ -2,6 +2,7 @@
 
 namespace Zoker\FilamentStaticPages\Classes;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
@@ -9,7 +10,16 @@ abstract class BlockComponent extends Component
 {
     public static string $viewNamespace = '';
 
+    public static string $viewTemplate = '';
+
+    public function __construct(public array $data) {}
+
     abstract public static function getSchema(): array;
+
+    public function render(): View
+    {
+        return view(static::$viewTemplate, ['data' => $this->data]);
+    }
 
     public static function getLabel(): string
     {

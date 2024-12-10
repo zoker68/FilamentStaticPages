@@ -3,7 +3,6 @@
 namespace Zoker\FilamentStaticPages\Components;
 
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Contracts\View\View;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ContentBlock extends BlockComponent
@@ -12,21 +11,13 @@ class ContentBlock extends BlockComponent
 
     public static string $viewNamespace = 'fsp';
 
-    public function __construct(public array $data) {}
-
-    public function render(): View
-    {
-        return view('filament-static-pages::components.content', [
-            'data' => $this->data,
-        ]);
-    }
+    public static string $viewTemplate = 'filament-static-pages::components.content';
 
     public static function getSchema(): array
     {
         return [
             RichEditor::make('data.content')
-                ->label('Content')
-                ->live(),
+                ->label('Content'),
         ];
     }
 }

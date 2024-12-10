@@ -4,7 +4,6 @@ namespace Zoker\FilamentStaticPages\Components;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Contracts\View\View;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class PartnersBlock extends BlockComponent
@@ -13,14 +12,7 @@ class PartnersBlock extends BlockComponent
 
     public static string $viewNamespace = 'fsp';
 
-    public function __construct(public array $data) {}
-
-    public function render(): View
-    {
-        return view('filament-static-pages::components.partners', [
-            'data' => $this->data,
-        ]);
-    }
+    public static string $viewTemplate = 'filament-static-pages::components.partners';
 
     public static function getSchema(): array
     {

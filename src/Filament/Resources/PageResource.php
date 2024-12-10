@@ -22,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Zoker\FilamentStaticPages\Classes\BlockComponent;
 use Zoker\FilamentStaticPages\Classes\ComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
@@ -100,7 +101,7 @@ class PageResource extends Resource
                                     ->collapsed(true)
                                     ->itemLabel(function (array $state): ?string {
                                         if (isset($state['component']) && ComponentRegistry::has($state['component'])) {
-                                            /** @var \Zoker\FilamentStaticPages\Classes\BlockComponent $blockComponent */
+                                            /** @var BlockComponent $blockComponent */
                                             $blockComponent = ComponentRegistry::get($state['component']);
 
                                             return $blockComponent::getLabel();
@@ -132,11 +133,12 @@ class PageResource extends Resource
                                                 ];
                                             }
 
-                                            /** @var \Zoker\FilamentStaticPages\Classes\BlockComponent $blockComponent */
+                                            /** @var BlockComponent $blockComponent */
                                             $blockComponent = ComponentRegistry::get($component);
 
                                             return $blockComponent::getSchema();
-                                        }),
+                                        })
+                                            ->columns(2),
 
                                     ])
                                     ->deleteAction(
