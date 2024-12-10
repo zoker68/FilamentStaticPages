@@ -12,8 +12,9 @@ class ComponentRegistry
         'Partners' => PartnersBlock::class,
     ];
 
-    public static function register(string $name, string $component): void
+    public static function register(string $component, ?string $name = null): void
     {
+        $name ??= class_basename($component);
         static::$components[$name] = $component;
     }
 
