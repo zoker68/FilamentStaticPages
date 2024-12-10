@@ -74,5 +74,5 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 
 - Register component in ServiceProvider
 ```php
-\Zoker\FilamentStaticPages\Classes\ComponentRegistry::register(\App\View\Components\TextBlock::class);
+\Zoker\FilamentStaticPages\Classes\ComponentRegistry::register(\App\View\Components\TextBlock::class, 'TextBlock');
 ```
