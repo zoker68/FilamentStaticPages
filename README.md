@@ -50,7 +50,7 @@ namespace App\View\Components;
 
 class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 {
-    public static string $view = 'components.text'; 
+    public static string $viewTemplate = 'components.text'; 
     
     public static function getSchema()
     {
@@ -69,7 +69,7 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 
 - Set view for component
 ```php
-    public static string $view = 'components.text';
+    public static string $viewTemplate = 'components.text';
 ```
 
 - Register component in ServiceProvider
