@@ -17,7 +17,8 @@ class ContentBlock extends BlockComponent
     {
         return [
             RichEditor::make('data.content')
-                ->label('Content'),
+                ->label('Content')
+                ->columnSpanFull(),
         ];
     }
 }

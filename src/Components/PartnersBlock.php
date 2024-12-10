@@ -31,7 +31,8 @@ class PartnersBlock extends BlockComponent
                     '16:9',
                     '4:3',
                     '1:1',
-                ]),
+                ])
+                ->columnSpanFull(),
         ];
     }
 }
