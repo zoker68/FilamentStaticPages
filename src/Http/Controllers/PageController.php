@@ -7,9 +7,11 @@ use Zoker\Shop\Http\Controllers\Controller;
 
 class PageController extends Controller
 {
-    public function __invoke(string $page)
+    public function __invoke()
     {
-        $page = Page::whereUrl($page)->published()->firstOrFail();
+        $pageUrl = ltrim(request()->route()->getName(), 'fsp.');
+
+        $page = Page::whereUrl($pageUrl)->published()->firstOrFail();
 
         $page->load([
             'blocks' => fn ($q) => $q->orderBy('sort'),

@@ -18,7 +18,7 @@ abstract class BlockComponent extends Component
 
     public function render(): View
     {
-        return view(static::$viewTemplate, ['data' => $this->data]);
+        return view(static::$viewTemplate, $this->data);
     }
 
     public static function getLabel(): string
