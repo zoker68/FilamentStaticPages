@@ -6,8 +6,6 @@
 return [
     /**
      * The prefix used for all static page routes.
-     *
-     * @var string
      */
     'route_prefix' => '',
 
@@ -20,4 +18,12 @@ return [
      * The prefix for all database table names.
      */
     'table_prefix' => 'zoker_fsp_',
+
+    /**
+     * The middleware to apply to all static page routes.
+     */
+    'middlewares' => [
+        'web',
+        class_exists(\Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class) ? \Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class : null, //TODO: Delete when Shop is installed
+    ],
 ];
