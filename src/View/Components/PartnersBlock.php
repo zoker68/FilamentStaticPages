@@ -20,7 +20,8 @@ class PartnersBlock extends BlockComponent
     {
         return [
             TextInput::make('title')
-                ->label('Title'),
+                ->label('Title')
+                ->columnSpanFull(),
 
             FileUpload::make('attachments')
                 ->multiple()

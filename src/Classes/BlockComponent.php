@@ -45,7 +45,7 @@ abstract class BlockComponent extends Component
         return static::$icon;
     }
 
-    public function getTemplate(): string
+    protected function getTemplate(): string
     {
         return static::getNamespace() . static::$viewTemplate;
     }
@@ -55,7 +55,7 @@ abstract class BlockComponent extends Component
         return static::getNamespace() . static::getComponentName();
     }
 
-    private static function getNamespace(): string
+    protected static function getNamespace(): string
     {
         return ! empty(static::$viewNamespace)
             ? static::$viewNamespace . '::'

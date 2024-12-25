@@ -26,4 +26,6 @@ return [
         'web',
         class_exists(\Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class) ? \Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class : null, //TODO: Delete when Shop is installed
     ],
+
+    'disk' => env('FSP_DISK', 'public'),
 ];

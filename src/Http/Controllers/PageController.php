@@ -10,10 +10,18 @@ class PageController extends Controller
     public function __invoke()
     {
         $routeName = request()->route()->getName();
+        $page = null;
 
-        $pageUrl = substr($routeName, 4);
+        if (str_starts_with($routeName, 'fsp.')) {
+            $pageUrl = substr($routeName, 4);
+            $page = Page::whereUrl($pageUrl)->published()->firstOrFail();
+        } elseif ($routeName === 'index') {
+            $page = Page::whereUrl($routeName)->firstOrFail();
+        }
 
-        $page = Page::whereUrl($pageUrl)->published()->firstOrFail();
+        if (! $page) {
+            abort(404);
+        }
 
         return view('fsp::blocks', compact('page'));
     }

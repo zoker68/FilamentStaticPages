@@ -91,6 +91,10 @@ class PageResource extends Resource
                             ->icon('heroicon-s-rectangle-stack')
                             ->schema([
                                 Builder::make('content')
+                                    ->blockNumbers(false)
+                                    ->collapsed()
+                                    ->cloneable()
+                                    ->blockPickerColumns(3)
                                     ->blocks(BlocksComponentRegistry::getFilamentSchema()),
                             ]),
                     ]),

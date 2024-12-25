@@ -3,14 +3,18 @@
 namespace Zoker\FilamentStaticPages\Classes;
 
 use Filament\Forms\Components\Builder\Block;
+use Zoker\FilamentStaticPages\View\Components\BannerBlock;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
 use Zoker\FilamentStaticPages\View\Components\PartnersBlock;
+use Zoker\FilamentStaticPages\View\Components\SliderBlock;
 
 class BlocksComponentRegistry
 {
     public static array $components = [
         'Content' => ContentBlock::class,
         'Partners' => PartnersBlock::class,
+        'Slider' => SliderBlock::class,
+        'Banner' => BannerBlock::class,
     ];
 
     public static function register(string $component, ?string $name = null): void
@@ -42,7 +46,8 @@ class BlocksComponentRegistry
             $options[] = Block::make($name)
                 ->label($component::getLabel())
                 ->schema($component::getSchema())
-                ->icon($component::getIcon());
+                ->icon($component::getIcon())
+                ->columns(2);
         }
 
         return $options;
