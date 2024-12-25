@@ -13,10 +13,12 @@ class ContentBlock extends BlockComponent
 
     public static string $viewTemplate = 'components.content';
 
+    public static string $icon = 'heroicon-o-document-text';
+
     public static function getSchema(): array
     {
         return [
-            RichEditor::make('data.content')
+            RichEditor::make('content')
                 ->label('Content')
                 ->columnSpanFull(),
         ];

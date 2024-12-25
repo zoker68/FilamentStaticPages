@@ -12,6 +12,8 @@ abstract class BlockComponent extends Component
 
     public static string $viewTemplate = '';
 
+    public static string $icon;
+
     public function __construct(public array $data) {}
 
     abstract public static function getSchema(): array;
@@ -32,6 +34,15 @@ abstract class BlockComponent extends Component
         return Str::of($className)
             ->replaceLast('Block', '')
             ->headline();
+    }
+
+    public static function getIcon(): ?string
+    {
+        if (! isset(static::$icon)) {
+            return null;
+        }
+
+        return static::$icon;
     }
 
     public function getTemplate(): string

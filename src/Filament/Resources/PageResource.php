@@ -3,9 +3,8 @@
 namespace Zoker\FilamentStaticPages\Filament\Resources;
 
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
@@ -22,7 +21,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Zoker\FilamentStaticPages\Classes\BlockComponent;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
@@ -92,58 +90,8 @@ class PageResource extends Resource
                         Tabs\Tab::make('Blocks')
                             ->icon('heroicon-s-rectangle-stack')
                             ->schema([
-                                Repeater::make('blocks')
-                                    ->relationship('blocks')
-                                    ->label('Blocks')
-                                    ->addActionLabel('Add Block')
-                                    ->reorderable('sort')
-                                    ->orderColumn('sort')
-                                    ->collapsed(true)
-                                    ->itemLabel(function (array $state): ?string {
-                                        if (isset($state['component']) && BlocksComponentRegistry::has($state['component'])) {
-                                            /** @var BlockComponent $blockComponent */
-                                            $blockComponent = BlocksComponentRegistry::get($state['component']);
-
-                                            return $blockComponent::getLabel();
-                                        }
-
-                                        return $state['component'] ?? null;
-                                    })
-                                    ->cloneable()
-                                    ->reorderableWithButtons()
-                                    ->live()
-                                    ->schema([
-                                        Select::make('component')
-                                            ->label('Component')
-                                            ->required()
-                                            ->live()
-                                            ->preload()
-                                            ->options(BlocksComponentRegistry::getOptions()),
-
-                                        Group::make(function (Get $get, array $state) {
-                                            $component = $get('component');
-                                            if (! $component || ! BlocksComponentRegistry::has($component)) {
-                                                return [];
-                                            }
-
-                                            if (! isset($state['id'])) {
-                                                return [
-                                                    Placeholder::make('')
-                                                        ->content('Save changes before editing block settings'),
-                                                ];
-                                            }
-
-                                            /** @var BlockComponent $blockComponent */
-                                            $blockComponent = BlocksComponentRegistry::get($component);
-
-                                            return $blockComponent::getSchema();
-                                        })
-                                            ->columns(2),
-
-                                    ])
-                                    ->deleteAction(
-                                        fn (Action $action) => $action->requiresConfirmation(),
-                                    ),
+                                Builder::make('content')
+                                    ->blocks(BlocksComponentRegistry::getFilamentSchema()),
                             ]),
                     ]),
             ]);

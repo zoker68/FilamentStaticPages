@@ -15,4 +15,9 @@ return [
      * The default layout to use for static pages.
      */
     'layout' => 'app',
+
+    /**
+     * The prefix for all database table names.
+     */
+    'table_prefix' => 'zoker_fsp_',
 ];

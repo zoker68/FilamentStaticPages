@@ -15,8 +15,7 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews('fsp')
             ->hasMigrations([
-                'create_zoker_pages_pages_table',
-                'create_zoker_pages_blocks_table',
+                'create_pages_table',
             ]);
 
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');

@@ -2,6 +2,7 @@
 
 namespace Zoker\FilamentStaticPages\Classes;
 
+use Filament\Forms\Components\Builder\Block;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
 use Zoker\FilamentStaticPages\View\Components\PartnersBlock;
 
@@ -33,11 +34,15 @@ class BlocksComponentRegistry
         return static::$components;
     }
 
-    public static function getOptions(): array
+    public static function getFilamentSchema(): array
     {
         $options = [];
+
         foreach (static::$components as $name => $component) {
-            $options[$name] = $component::getLabel();
+            $options[] = Block::make($name)
+                ->label($component::getLabel())
+                ->schema($component::getSchema())
+                ->icon($component::getIcon());
         }
 
         return $options;

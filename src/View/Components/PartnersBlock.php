@@ -14,13 +14,15 @@ class PartnersBlock extends BlockComponent
 
     public static string $viewTemplate = 'components.partners';
 
+    public static string $icon = 'heroicon-o-users';
+
     public static function getSchema(): array
     {
         return [
-            TextInput::make('data.title')
+            TextInput::make('title')
                 ->label('Title'),
 
-            FileUpload::make('data.attachments')
+            FileUpload::make('attachments')
                 ->multiple()
                 ->image()
                 ->imageEditor()

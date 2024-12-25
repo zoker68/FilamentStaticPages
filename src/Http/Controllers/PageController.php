@@ -15,10 +15,6 @@ class PageController extends Controller
 
         $page = Page::whereUrl($pageUrl)->published()->firstOrFail();
 
-        $page->load([
-            'blocks' => fn ($q) => $q->orderBy('sort'),
-        ]);
-
         return view('fsp::blocks', compact('page'));
     }
 }
