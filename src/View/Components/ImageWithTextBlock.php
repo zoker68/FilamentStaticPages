@@ -11,21 +11,26 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
-class SliderBlock extends BlockComponent
+class ImageWithTextBlock extends BlockComponent
 {
-    public static string $label = 'Slider (Blocks)';
+    public static string $label = 'Image with text';
 
-    public static string $viewTemplate = 'components.slider';
+    public static string $viewTemplate = 'components.image-with-text';
 
     public static string $viewNamespace = 'fsp';
 
-    public static string $icon = 'heroicon-c-chevron-double-right';
+    public static string $icon = 'heroicon-o-identification';
 
     public function render(): View
     {
         $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
 
         return parent::render();
+    }
+
+    protected function getTemplate(): string
+    {
+        return parent::getTemplate() . '.' . $this->data['template'];
     }
 
     public static function getSchema(): array
@@ -35,38 +40,51 @@ class SliderBlock extends BlockComponent
                 ->label('Layout')
                 ->columnSpanFull()
                 ->options([
-                    'default' => 'Default (simple slider)',
-                    'block' => 'Block (Features)',
+                    'small-icon' => 'Small block with icon',
+                    'wide-image' => 'Wide block with image',
                 ])
-                ->default('default')
+                ->default('small-icon')
                 ->required()
                 ->selectablePlaceholder(false),
 
-            Repeater::make('slides')
-                ->label('Slides')
+            Repeater::make('blocks')
+                ->label('Blocks')
                 ->columnSpanFull()
-                ->addActionLabel('Add slide')
+                ->addActionLabel('Add block')
                 ->minItems(1)
                 ->collapsed()
                 ->cloneable()
-                ->itemLabel(fn (array $state): string => $state['heading'] ?? 'Slide')
+                ->itemLabel(fn (array $state): string => $state['heading'] ?? 'Block')
                 ->columns(3)
                 ->schema([
-                    'heading' => TextInput::make('heading')
+                    TextInput::make('heading')
                         ->label('Heading')
                         ->maxValue(255)
                         ->columnSpanFull(),
 
-                    'button' => TextInput::make('button')
-                        ->label('Button text')
-                        ->maxValue(255),
+                    RichEditor::make('text')
+                        ->label('Text')
+                        ->columnStart(1)
+                        ->columnSpan(2),
 
-                    'link' => TextInput::make('link')
+                    FileUpload::make('image')
+                        ->label('Image')
+                        ->image()
+                        ->disk(config('filament-static-pages.disk'))
+                        ->directory('blocks-images')
+                        ->maxSize(10 * 1024)
+                        ->imageEditor()
+                        ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
+
+                    TextInput::make('link.text')
+                        ->label('Link Text')
+                        ->maxValue(255),
+                    TextInput::make('link.url')
                         ->label('URL')
                         ->maxValue(255)
                         ->url(),
 
-                    'target' => Select::make('target')
+                    Select::make('link.target')
                         ->label('Link Target')
                         ->default('_self')
                         ->selectablePlaceholder(false)
@@ -76,20 +94,6 @@ class SliderBlock extends BlockComponent
                             '_parent' => '_parent',
                             '_top' => '_top',
                         ]),
-
-                    'text' => RichEditor::make('text')
-                        ->label('Text')
-                        ->columnStart(1)
-                        ->columnSpan(2),
-
-                    'image' => FileUpload::make('image')
-                        ->label('Image')
-                        ->image()
-                        ->disk(config('filament-static-pages.disk'))
-                        ->directory('sliders')
-                        ->maxSize(10 * 1024)
-                        ->imageEditor()
-                        ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
                 ]),
         ];
     }

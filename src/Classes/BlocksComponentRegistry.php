@@ -5,6 +5,7 @@ namespace Zoker\FilamentStaticPages\Classes;
 use Filament\Forms\Components\Builder\Block;
 use Zoker\FilamentStaticPages\View\Components\BannerBlock;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
+use Zoker\FilamentStaticPages\View\Components\ImageWithTextBlock;
 use Zoker\FilamentStaticPages\View\Components\PartnersBlock;
 use Zoker\FilamentStaticPages\View\Components\SliderBlock;
 
@@ -14,6 +15,7 @@ class BlocksComponentRegistry
         'Content' => ContentBlock::class,
         'Partners' => PartnersBlock::class,
         'Slider' => SliderBlock::class,
+        'ImageWithText' => ImageWithTextBlock::class,
         'Banner' => BannerBlock::class,
     ];
 

@@ -36,6 +36,7 @@ class BannerBlock extends BlockComponent
 
             'target' => Select::make('target')
                 ->label('Link Target')
+                ->default('_self')
                 ->selectablePlaceholder(false)
                 ->options([
                     '_self' => '_self',
@@ -53,7 +54,7 @@ class BannerBlock extends BlockComponent
                 ->label('Image')
                 ->image()
                 ->disk(config('filament-static-pages.disk'))
-                ->directory('sliders')
+                ->directory('banners')
                 ->maxSize(10 * 1024)
                 ->imageEditor()
                 ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1'])
