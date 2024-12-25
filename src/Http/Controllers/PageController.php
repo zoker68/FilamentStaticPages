@@ -9,7 +9,9 @@ class PageController extends Controller
 {
     public function __invoke()
     {
-        $pageUrl = ltrim(request()->route()->getName(), 'fsp.');
+        $routeName = request()->route()->getName();
+
+        $pageUrl = substr($routeName, 4);
 
         $page = Page::whereUrl($pageUrl)->published()->firstOrFail();
 
@@ -17,6 +19,6 @@ class PageController extends Controller
             'blocks' => fn ($q) => $q->orderBy('sort'),
         ]);
 
-        return view('filament-static-pages::blocks', compact('page'));
+        return view('fsp::blocks', compact('page'));
     }
 }

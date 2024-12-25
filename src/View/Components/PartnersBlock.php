@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Components;
+namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -12,7 +12,7 @@ class PartnersBlock extends BlockComponent
 
     public static string $viewNamespace = 'fsp';
 
-    public static string $viewTemplate = 'filament-static-pages::components.partners';
+    public static string $viewTemplate = 'components.partners';
 
     public static function getSchema(): array
     {

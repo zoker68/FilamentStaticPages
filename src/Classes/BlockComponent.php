@@ -18,7 +18,7 @@ abstract class BlockComponent extends Component
 
     public function render(): View
     {
-        return view(static::$viewTemplate, $this->data);
+        return view(static::getTemplate(), $this->data);
     }
 
     public static function getLabel(): string
@@ -34,20 +34,25 @@ abstract class BlockComponent extends Component
             ->headline();
     }
 
+    public function getTemplate(): string
+    {
+        return static::getNamespace() . static::$viewTemplate;
+    }
+
     public static function getViewComponent(): string
     {
-        return static::getNamespace() . static::getComponentKebabName();
+        return static::getNamespace() . static::getComponentName();
     }
 
     private static function getNamespace(): string
     {
         return ! empty(static::$viewNamespace)
-            ? static::$viewNamespace . '-'
+            ? static::$viewNamespace . '::'
             : '';
     }
 
-    public static function getComponentKebabName(): string
+    public static function getComponentName(): string
     {
-        return Str::of(class_basename(static::class))->kebab();
+        return Str::of(static::class)->after('\\Components\\')->replace('\\', '.');
     }
 }

@@ -6,7 +6,7 @@ use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zoker\FilamentStaticPages\Classes\ComponentRegistry;
+use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 
 class Block extends Model
 {
@@ -44,11 +44,11 @@ class Block extends Model
 
     public function getViewComponent(): string
     {
-        if (! ComponentRegistry::has($this->component)) {
+        if (! BlocksComponentRegistry::has($this->component)) {
             throw new InvalidArgumentException('Unknown component: ' . $this->component);
         }
 
-        $componentClass = ComponentRegistry::getComponent($this->component);
+        $componentClass = BlocksComponentRegistry::getComponent($this->component);
 
         return $componentClass::getViewComponent();
     }

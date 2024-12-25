@@ -2,10 +2,10 @@
 
 namespace Zoker\FilamentStaticPages\Classes;
 
-use Zoker\FilamentStaticPages\Components\ContentBlock;
-use Zoker\FilamentStaticPages\Components\PartnersBlock;
+use Zoker\FilamentStaticPages\View\Components\ContentBlock;
+use Zoker\FilamentStaticPages\View\Components\PartnersBlock;
 
-class ComponentRegistry
+class BlocksComponentRegistry
 {
     public static array $components = [
         'Content' => ContentBlock::class,

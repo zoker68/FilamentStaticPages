@@ -23,7 +23,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
-use Zoker\FilamentStaticPages\Classes\ComponentRegistry;
+use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
 use Zoker\FilamentStaticPages\Models\Page;
@@ -100,9 +100,9 @@ class PageResource extends Resource
                                     ->orderColumn('sort')
                                     ->collapsed(true)
                                     ->itemLabel(function (array $state): ?string {
-                                        if (isset($state['component']) && ComponentRegistry::has($state['component'])) {
+                                        if (isset($state['component']) && BlocksComponentRegistry::has($state['component'])) {
                                             /** @var BlockComponent $blockComponent */
-                                            $blockComponent = ComponentRegistry::get($state['component']);
+                                            $blockComponent = BlocksComponentRegistry::get($state['component']);
 
                                             return $blockComponent::getLabel();
                                         }
@@ -118,11 +118,11 @@ class PageResource extends Resource
                                             ->required()
                                             ->live()
                                             ->preload()
-                                            ->options(ComponentRegistry::getOptions()),
+                                            ->options(BlocksComponentRegistry::getOptions()),
 
                                         Group::make(function (Get $get, array $state) {
                                             $component = $get('component');
-                                            if (! $component || ! ComponentRegistry::has($component)) {
+                                            if (! $component || ! BlocksComponentRegistry::has($component)) {
                                                 return [];
                                             }
 
@@ -134,7 +134,7 @@ class PageResource extends Resource
                                             }
 
                                             /** @var BlockComponent $blockComponent */
-                                            $blockComponent = ComponentRegistry::get($component);
+                                            $blockComponent = BlocksComponentRegistry::get($component);
 
                                             return $blockComponent::getSchema();
                                         })

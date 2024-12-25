@@ -19,12 +19,6 @@ php artisan vendor:publish --tag=filament-static-pages-config
 php artisan vendor:publish --tag=filament-static-pages-views
 ```
 
-## Publish components
-
-```bash
-php artisan vendor:publish --tag=filament-static-pages-components
-```
-
 ## Publish migrations
 
 ```bash
@@ -73,6 +67,7 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 ```
 
 - Register component in ServiceProvider
+
 ```php
-\Zoker\FilamentStaticPages\Classes\ComponentRegistry::register(\App\View\Components\TextBlock::class, 'TextBlock');
+\Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry::register(\App\View\Components\TextBlock::class, 'TextBlock');
 ```

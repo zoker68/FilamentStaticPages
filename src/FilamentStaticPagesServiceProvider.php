@@ -2,10 +2,9 @@
 
 namespace Zoker\FilamentStaticPages;
 
+use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Zoker\FilamentStaticPages\Components\ContentBlock;
-use Zoker\FilamentStaticPages\Components\PartnersBlock;
 
 class FilamentStaticPagesServiceProvider extends PackageServiceProvider
 {
@@ -14,15 +13,13 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
         $package->name('filament-static-pages')
             ->hasViews()
             ->hasConfigFile()
-            ->hasViews()
-            ->hasViewComponents('fsp',
-                ContentBlock::class,
-                PartnersBlock::class
-            )
+            ->hasViews('fsp')
             ->hasMigrations([
                 'create_zoker_pages_pages_table',
                 'create_zoker_pages_blocks_table',
             ]);
+
+        Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');
     }
 
     public function bootingPackage()

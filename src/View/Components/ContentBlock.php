@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Components;
+namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\RichEditor;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
@@ -11,7 +11,7 @@ class ContentBlock extends BlockComponent
 
     public static string $viewNamespace = 'fsp';
 
-    public static string $viewTemplate = 'filament-static-pages::components.content';
+    public static string $viewTemplate = 'components.content';
 
     public static function getSchema(): array
     {
