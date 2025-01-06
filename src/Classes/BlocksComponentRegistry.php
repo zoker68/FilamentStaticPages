@@ -5,8 +5,11 @@ namespace Zoker\FilamentStaticPages\Classes;
 use Filament\Forms\Components\Builder\Block;
 use Zoker\FilamentStaticPages\View\Components\BannerBlock;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
+use Zoker\FilamentStaticPages\View\Components\HeadingBlock;
 use Zoker\FilamentStaticPages\View\Components\ImageWithTextBlock;
+use Zoker\FilamentStaticPages\View\Components\MetaBlock;
 use Zoker\FilamentStaticPages\View\Components\PartnersBlock;
+use Zoker\FilamentStaticPages\View\Components\QuestionAnswerBlock;
 use Zoker\FilamentStaticPages\View\Components\SliderBlock;
 
 class BlocksComponentRegistry
@@ -17,6 +20,9 @@ class BlocksComponentRegistry
         'Slider' => SliderBlock::class,
         'ImageWithText' => ImageWithTextBlock::class,
         'Banner' => BannerBlock::class,
+        'Heading' => HeadingBlock::class,
+        'QuestionAnswer' => QuestionAnswerBlock::class,
+        'Meta Data' => MetaBlock::class,
     ];
 
     public static function register(string $component, ?string $name = null): void
@@ -49,7 +55,8 @@ class BlocksComponentRegistry
                 ->label($component::getLabel())
                 ->schema($component::getSchema())
                 ->icon($component::getIcon())
-                ->columns(2);
+                ->columns(2)
+                ->maxItems($component::maxItem());
         }
 
         return $options;

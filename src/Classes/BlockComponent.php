@@ -66,4 +66,9 @@ abstract class BlockComponent extends Component
     {
         return Str::of(static::class)->after('\\Components\\')->replace('\\', '.');
     }
+
+    public static function maxItem(): ?int
+    {
+        return null;
+    }
 }
