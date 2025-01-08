@@ -4,6 +4,7 @@ namespace Zoker\FilamentStaticPages\Classes;
 
 use Filament\Forms\Components\Builder\Block;
 use Zoker\FilamentStaticPages\View\Components\BannerBlock;
+use Zoker\FilamentStaticPages\View\Components\BreadcrumbsBlock;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
 use Zoker\FilamentStaticPages\View\Components\HeadingBlock;
 use Zoker\FilamentStaticPages\View\Components\ImageWithTextBlock;
@@ -23,6 +24,7 @@ class BlocksComponentRegistry
         'Heading' => HeadingBlock::class,
         'QuestionAnswer' => QuestionAnswerBlock::class,
         'Meta Data' => MetaBlock::class,
+        'Breadcrumbs' => BreadcrumbsBlock::class,
     ];
 
     public static function register(string $component, ?string $name = null): void

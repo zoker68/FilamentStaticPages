@@ -5,6 +5,7 @@ namespace Zoker\FilamentStaticPages\Classes;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
+use Zoker\FilamentStaticPages\Models\Page;
 
 abstract class BlockComponent extends Component
 {
@@ -14,7 +15,7 @@ abstract class BlockComponent extends Component
 
     public static string $icon;
 
-    public function __construct(public array $data) {}
+    public function __construct(public array $data, public Page $page) {}
 
     abstract public static function getSchema(): array;
 

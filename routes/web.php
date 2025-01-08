@@ -9,6 +9,6 @@ Route::middleware(config('filament-static-pages.middlewares'))
     ->name('fsp.')
     ->group(function () {
         foreach (Page::getAllRoutes() as $route) {
-            Route::get($route, PageController::class)->name($route);
+            Route::get($route ?? '/', PageController::class)->name($route);
         }
     });

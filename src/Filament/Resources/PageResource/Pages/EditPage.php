@@ -10,6 +10,16 @@ class EditPage extends EditRecord
 {
     protected static string $resource = PageResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($data['url'] === 'index') {
+            $data['parent_id'] = null;
+            $data['published'] = false;
+        }
+
+        return $data;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

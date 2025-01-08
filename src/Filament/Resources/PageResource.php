@@ -59,11 +59,19 @@ class PageResource extends Resource
 
                                 TextInput::make('url')
                                     ->label('URL')
-                                    ->required()
                                     ->prefix(function (): string {
                                         return url(config('filament-static-pages.route_prefix')) . '/';
                                     })
                                     ->unique(ignoreRecord: true),
+
+                                Select::make('parent_id')
+                                    ->label('Parent page')
+                                    ->options(
+                                        fn (?Page $record): array => Page::query()
+                                            ->when($record, fn ($query) => $query->where('id', '!=', $record->id))
+                                            ->pluck('name', 'id')
+                                            ->toArray()
+                                    ),
 
                                 Select::make('layout')
                                     ->label('Layout')
@@ -104,10 +112,13 @@ class PageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('parent_id', 'asc')
+            ->modifyQueryUsing(fn ($query) => $query->with('parent'))
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn (Page $record) => $record->parent ? 'Parent page: ' . $record->parent->name : null),
 
                 TextColumn::make('url')
                     ->label('URL')

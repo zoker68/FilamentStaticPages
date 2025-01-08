@@ -2,11 +2,12 @@
 
 namespace Zoker\FilamentStaticPages\Models;
 
-use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Schema;
+use InvalidArgumentException;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Observers\PageObserver;
@@ -30,6 +31,11 @@ class Page extends Model
         'published',
     ];
 
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
     public function getTable(): string
     {
         return config('filament-static-pages.table_prefix') . 'pages';
@@ -41,7 +47,20 @@ class Page extends Model
             return [];
         }
 
-        return cache()->remember(self::CACHE_KEY_ROUTES, now()->addMinutes(10), fn () => self::published()->pluck('url')->toArray());
+        return cache()->remember(
+            self::CACHE_KEY_ROUTES,
+            now()->addMinutes(10),
+            fn () => self::published()->pluck('url')->toArray()
+        );
+    }
+
+    public function scopeUrl(Builder $query, string $url): Builder
+    {
+        if (empty($url)) {
+            return $query->whereNull('url');
+        }
+
+        return $query->where('url', $url);
     }
 
     public function scopePublished(Builder $query): Builder
