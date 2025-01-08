@@ -23,11 +23,6 @@ class BreadcrumbsBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-link';
 
-    /*    public function render(): View
-        {
-            dd($this);
-        }*/
-
     public static function getSchema(): array
     {
 
