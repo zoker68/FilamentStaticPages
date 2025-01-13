@@ -2,18 +2,7 @@
 <div class="container py-5 flex items-center">
     @foreach($breadcrumbs as $breadcrumb)
         @if(! $loop->last)
-            @php
-                $urlSettings = $breadcrumb['url'][0];
-
-                if ($urlSettings['type'] === 'fsp') {
-                    $url = route('fsp.' . $urlSettings['data']['page']);
-                } elseif ($urlSettings['type'] === 'route') {
-                    $url = route($urlSettings['data']['route'], array_merge(...$urlSettings['data']['params']));
-                } else {
-                    $url = $urlSettings['data']['url'];
-                }
-            @endphp
-            <a href="{{ $url }}" class="flex items-center hover:underline hover:text-secondary">
+            <a href="{{ $menu->getUrl($breadcrumb) }}" class="flex items-center hover:underline hover:text-secondary">
         @endif
 
         @if($loop->first)

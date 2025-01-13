@@ -17,12 +17,13 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_pages_table',
                 'add_parent_id_field_to_pages_table',
+                'create_menu_table',
             ]);
 
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');
     }
 
-    public function bootingPackage()
+    public function bootingPackage(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }

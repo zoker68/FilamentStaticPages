@@ -17,8 +17,6 @@ class Page extends Model
 {
     const string CACHE_KEY_ROUTES = 'filament_static_pages_routes';
 
-    protected $table = 'zoker_pages_pages';
-
     protected $casts = [
         'published' => 'boolean',
         'content' => 'array',

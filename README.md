@@ -71,3 +71,9 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 ```php
 \Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry::register(\App\View\Components\TextBlock::class, 'TextBlock');
 ```
+
+# Menu
+
+```php
+<x-fsp::menu code="menu-code"/>
+```
