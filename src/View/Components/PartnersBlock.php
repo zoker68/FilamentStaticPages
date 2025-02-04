@@ -4,6 +4,7 @@ namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class PartnersBlock extends BlockComponent
@@ -37,5 +38,10 @@ class PartnersBlock extends BlockComponent
                 ])
                 ->columnSpanFull(),
         ];
+    }
+
+    public static function getBlockHeader(array $state): string
+    {
+        return static::getLabel() . ($state['title'] ? ' | ' . Str::of($state['title'])->limit(60) : '');
     }
 }

@@ -3,6 +3,7 @@
 namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\RichEditor;
+use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ContentBlock extends BlockComponent
@@ -22,5 +23,10 @@ class ContentBlock extends BlockComponent
                 ->label('Content')
                 ->columnSpanFull(),
         ];
+    }
+
+    public static function getBlockHeader(array $state): string
+    {
+        return static::getLabel() . ($state['content'] ? ' | ' . Str::of($state['content'])->stripTags()->limit(60) : '');
     }
 }

@@ -61,4 +61,9 @@ class BannerBlock extends BlockComponent
                 ->columnSpanFull(),
         ];
     }
+
+    public static function getBlockHeader(array $state): string
+    {
+        return static::getLabel() . ($state['alt'] ? ' | ' . $state['alt'] : '');
+    }
 }

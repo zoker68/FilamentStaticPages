@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ImageWithTextBlock extends BlockComponent
@@ -96,5 +97,16 @@ class ImageWithTextBlock extends BlockComponent
                         ]),
                 ]),
         ];
+    }
+
+    public static function getBlockHeader(array $state): string
+    {
+        if (count($state['blocks']) === 0) {
+            return static::getLabel();
+        }
+
+        $firstBlock = reset($state['blocks']);
+
+        return static::getLabel() . (isset($firstBlock['heading']) ? ' | ' . Str::of($firstBlock['heading'])->limit(60) : '');
     }
 }

@@ -54,7 +54,14 @@ class BlocksComponentRegistry
 
         foreach (static::$components as $name => $component) {
             $options[] = Block::make($name)
-                ->label($component::getLabel())
+                ->label(function (?array $state) use ($component): string {
+                    if (method_exists($component, 'getBlockHeader') && is_array($state)) {
+                        return $component::getBlockHeader($state);
+
+                    }
+
+                    return $component::getLabel();
+                })
                 ->schema($component::getSchema())
                 ->icon($component::getIcon())
                 ->columns(2)
