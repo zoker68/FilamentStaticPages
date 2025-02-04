@@ -10,7 +10,7 @@
                     <a href="{{ $slide['link']['url'] }}" target="{{ $slide['link']['target'] }}"  class="primary-btn min-w-[80px] mt-3">{{ $slide['link']['text'] }}</a>
                 </div>
                 <div class="flex justify-center">
-                    <img src="{{ Croppa::url($storageUrl.$slide['image'], 200, 150) }}"
+                    <img src="{{ $storageUrl.$slide['image'] }}"
                          class="w-[200px] h-[150px] lg:h-[180px] object-contain flex-shrink-0 hover:scale-105 transition-all duration-300"
                          alt="product">
                 </div>
