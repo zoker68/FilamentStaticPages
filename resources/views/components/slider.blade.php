@@ -12,18 +12,18 @@
                             <div class="lg:flex flex-wrap">
                                 <div class="w-full lg:w-1/2">
                                     <div>
-                                        @if($slide['heading'])
+                                        @if($slide['heading'] ?? false)
                                         <h1
                                             class="text-[38px] md:text-[56px] lg:text-5xl xl:text-[56px] leading-[42px] md:leading-[64px] lg:leading-[48px] xl:leading-[64px] font-medium mb-2 sm:mb-4 text-secondary">
                                             {{ $slide['heading'] }}
                                         </h1>
                                         @endif
-                                        @if($slide['text'])
+                                        @if($slide['text'] ?? false)
                                         <p class="text-secondary text-base mb-2 sm:mb-4">
                                             {!! $slide['text'] !!}
                                         </p>
                                         @endif
-                                        @if($slide['button'])
+                                        @if($slide['button'] ?? false)
                                         <div class="mt-[30px] md:mt-[40px]">
                                             <a class="primary-btn py-2.5" href="{{ $slide['link'] }}" target="{{ $slide['target'] }}" tabindex="-1">{{ $slide['button'] }}</a>
                                         </div>

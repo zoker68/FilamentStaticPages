@@ -7,6 +7,8 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
@@ -25,6 +27,13 @@ class SliderBlock extends BlockComponent
     {
         $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
 
+        if ($this->data['only_images']) {
+            $this->data['slides'] = [];
+            foreach ($this->data['gallery'] as $image) {
+                $this->data['slides'][]['image'] = $image;
+            }
+        }
+
         return parent::render();
     }
 
@@ -42,7 +51,27 @@ class SliderBlock extends BlockComponent
                 ->required()
                 ->selectablePlaceholder(false),
 
+            Toggle::make('only_images')
+                ->label('Only images')
+                ->default(false)
+                ->live(),
+
+            FileUpload::make('gallery')
+                ->label('Gallery')
+                ->multiple()
+                ->hidden(fn (Get $get) => ! $get('only_images'))
+                ->image()
+                ->columnSpanFull()
+                ->disk(config('filament-static-pages.disk'))
+                ->directory('sliders')
+                ->maxSize(10 * 1024)
+                ->imageEditor()
+                ->reorderable()
+                ->panelLayout('grid')
+                ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
+
             Repeater::make('slides')
+                ->hidden(fn (Get $get) => $get('only_images'))
                 ->label('Slides')
                 ->columnSpanFull()
                 ->addActionLabel('Add slide')
