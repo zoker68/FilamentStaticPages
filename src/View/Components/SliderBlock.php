@@ -27,7 +27,7 @@ class SliderBlock extends BlockComponent
     {
         $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
 
-        if ($this->data['only_images']) {
+        if ($this->data['only_images'] ?? false) {
             $this->data['slides'] = [];
             foreach ($this->data['gallery'] as $image) {
                 $this->data['slides'][]['image'] = $image;
