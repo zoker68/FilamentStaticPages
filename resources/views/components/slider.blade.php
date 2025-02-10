@@ -10,8 +10,8 @@
                         @if(($slide['link'] ?? false) && !($slide['button'] ?? false))
                             <a href="{{ $slide['link'] }}" target="{{ $slide['target'] }}">
                                 @endif
-                                <div class="swiper-slide-inner"
-                                     style="background-image: url({{ $storageUrl . $slide['image'] }});">
+                                <div class="swiper-slide-inner swiper-lazy" data-background="{{ $storageUrl . $slide['image'] }}">
+                                     {{--style="background-image: url({{ $storageUrl . $slide['image'] }});">--}}
                                     @if(($slide['heading'] ?? false) || ($slide['text'] ?? false) || ($slide['button'] ?? false))
                                         <div class="w-full lg:w-1/2">
                                             @if($slide['heading'] ?? false)
