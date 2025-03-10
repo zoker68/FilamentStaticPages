@@ -3,6 +3,7 @@
 namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
@@ -21,6 +22,10 @@ class ContentBlock extends BlockComponent
         return [
             RichEditor::make('content')
                 ->label('Content')
+                ->columnSpanFull(),
+
+            TextInput::make('css_class')
+                ->label('CSS Class')
                 ->columnSpanFull(),
         ];
     }

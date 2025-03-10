@@ -27,7 +27,6 @@ class HeadingBlock extends BlockComponent
 
             Select::make('size')
                 ->label('Size')
-                ->columnSpanFull()
                 ->options([
                     'h1' => 'H1',
                     'h2' => 'H2',
@@ -38,6 +37,9 @@ class HeadingBlock extends BlockComponent
                 ])
                 ->selectablePlaceholder(false)
                 ->required(),
+
+            TextInput::make('css_class')
+                ->label('CSS Class'),
         ];
     }
 
