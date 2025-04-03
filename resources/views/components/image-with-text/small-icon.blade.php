@@ -1,25 +1,24 @@
-<section {{ $attributes->class(['py-14']) }}>
+<section {{ $attributes->class(['infobox py-10']) }}>
     <div class="container">
         <div class="flex justify-center">
-            <div class="w-full xl:w-5/6 max-w-full xl:px-3">
-                <div class="sm:flex justify-center">
+            <div class="w-full max-w-full">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-10 flex-wrap justify-between">
                     @foreach($blocks as $block)
-                        <div class="w-[270px] sm:w-1/3 max-w-full sm:pr-3 mb-3 sm:mb-0 mx-auto">
-                            <div class="min-h-[90px] border border-primary rounded-sm flex items-center justify-center">
+                            <div class="group min-h-[90px] h-full w-full px-5 lg:px-10 py-6 border border-[#EDECEC] hover:shadow-lg rounded-md flex flex-row gap-6 lg:gap-8 items-center justify-center transition-all duration-300">
                                 @if ($block['image'])
-                                    <div class="mr-3 md:mr-6 flex-shrink-0">
+                                    <div class="flex-shrink-0">
                                         <img src="{{ $storageUrl . $block['image'] }}"
-                                             class="w-[40px] md:w-[50px] max-h-11"
+                                             class="w-[40px] md:w-[50px] max-h-11 group-hover:scale-110 transition-all duration-300"
                                              alt="icon">
                                     </div>
                                 @endif
-                                <div>
+                                <div class="flex-1">
                                     @if ($block['heading'])
-                                        <h4 class="text-lg sm:text-base md:text-lg leading-6 mb-1">{{ $block['heading'] }}</h4>
+                                        <h4 class="text-lg sm:text-base md:text-lg leading-6 mb-1 group-hover:text-secondary transition-all duration-300">{{ $block['heading'] }}</h4>
                                     @endif
                                     @if($block['text'])
                                         <div
-                                            class="sm:text-[10px] md:text-[13px] text-[#6B6B6B]">{!! $block['text'] !!}</div>
+                                            class="sm:text-[12px] md:text-[15px] text-[#666666] leading-tight">{!! $block['text'] !!}</div>
                                     @endif
 
                                     @if ($block['link']['text'])
@@ -31,7 +30,6 @@
                                 </div>
                             </div>
 
-                        </div>
                     @endforeach
                 </div>
             </div>

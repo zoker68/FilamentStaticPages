@@ -15,7 +15,7 @@
                                     @if(($slide['heading'] ?? false) || ($slide['text'] ?? false) || ($slide['button'] ?? false))
                                         <div class="w-full lg:w-1/2">
                                             @if($slide['heading'] ?? false)
-                                                <h1>{{ $slide['heading'] }}</h1>
+                                                <h2>{{ $slide['heading'] }}</h2>
                                             @endif
                                             @if($slide['text'] ?? false)
                                                 <p>{!! $slide['text'] !!}</p>
@@ -23,7 +23,7 @@
                                             @if($slide['button'] ?? false)
                                                 <div class="mt-[30px] md:mt-[40px]">
                                                     <a href="{{ $slide['link'] }}" target="{{ $slide['target'] }}"
-                                                       tabindex="-1">{{ $slide['button'] }}</a>
+                                                       tabindex="-1" class="btn btn-primary">{{ $slide['button'] }}</a>
                                                 </div>
                                             @endif
                                         </div>
