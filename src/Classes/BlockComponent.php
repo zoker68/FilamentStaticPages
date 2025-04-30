@@ -15,7 +15,7 @@ abstract class BlockComponent extends Component
 
     public static string $icon;
 
-    public function __construct(public array $data, public Page $page) {}
+    public function __construct(public array $data, public ?Page $page = null) {}
 
     abstract public static function getSchema(): array;
 

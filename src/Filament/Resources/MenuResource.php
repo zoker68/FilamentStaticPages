@@ -29,6 +29,8 @@ class MenuResource extends Resource
 
     protected static ?string $navigationGroup = 'Static Pages';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         $schema = [

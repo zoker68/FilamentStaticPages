@@ -3,12 +3,13 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Zoker\FilamentStaticPages\Models\Menu;
 
 return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('filament-static-pages.table_prefix') . 'menus', function (Blueprint $table) {
+        Schema::create((new Menu)->getTable(), function (Blueprint $table) {
             $table->id();
 
             $table->string('code')->index();
@@ -20,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('filament-static-pages.table_prefix') . 'menus');
+        Schema::dropIfExists((new Menu)->getTable());
     }
 };

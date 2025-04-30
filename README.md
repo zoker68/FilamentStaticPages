@@ -77,3 +77,9 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 ```php
 <x-fsp::menu code="menu-code"/>
 ```
+
+# Content everywhere
+
+```bladehtml
+@fspContent(content-code)
+```

@@ -35,6 +35,7 @@ class HeadingBlock extends BlockComponent
                     'h5' => 'H5',
                     'h6' => 'H6',
                 ])
+                ->default('h3')
                 ->selectablePlaceholder(false)
                 ->required(),
 

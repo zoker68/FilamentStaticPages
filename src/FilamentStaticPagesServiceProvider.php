@@ -18,9 +18,14 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
                 'create_pages_table',
                 'add_parent_id_field_to_pages_table',
                 'create_menu_table',
+                'create_content_table',
             ]);
 
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');
+
+        Blade::directive('fspContent', function ($code) {
+            return "<?php echo \Blade::render('<x-fsp::render-content-directive code=\"$code\" />'); ?>";
+        });
     }
 
     public function bootingPackage(): void

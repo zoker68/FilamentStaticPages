@@ -12,7 +12,7 @@
                 <div class="flex justify-center">
                     <img src="{{ $storageUrl.$slide['image'] }}"
                          class="w-[200px] h-[150px] lg:h-[180px] object-contain flex-shrink-0 hover:scale-105 transition-all duration-300"
-                         alt="product">
+                         alt="{{ $slide['heading'] }}">
                 </div>
             </div>
         </div>
