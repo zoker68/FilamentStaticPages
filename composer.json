@@ -10,7 +10,8 @@
     "authors": [
         {
             "name": "Maksim Martynov",
-            "email": "zokermm@gmail.com"
+            "email": "zokermm@gmail.com",
+            "homepage": "https://github.com/zoker68"
         }
     ],
     "minimum-stability": "dev",
@@ -25,6 +26,9 @@
             "providers": [
                 "Zoker\\FilamentStaticPages\\FilamentStaticPagesServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1-dev"
         }
     }
 }
