@@ -15,7 +15,7 @@ class PageController extends Controller
         if (str_starts_with($routeName, 'fsp.')) {
             $pageUrl = substr($routeName, 4);
             $page = Page::url($pageUrl)->published()->firstOrFail();
-        } elseif ($routeName === 'index') {
+        } elseif ($routeName === 'index' || $routeName === 'multisite.index') {
             $page = Page::whereNull('url')->firstOrFail();
         }
 
