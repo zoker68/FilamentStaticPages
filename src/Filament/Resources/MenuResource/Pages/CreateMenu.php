@@ -3,7 +3,7 @@
 namespace Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use Zoker\FilamentStaticPages\Filament\Resources\MenuResource;
+use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\MenuResource;
 
 class CreateMenu extends CreateRecord
 {

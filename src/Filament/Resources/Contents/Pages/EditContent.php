@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Filament\Resources\ContentResource\Pages;
+namespace Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Zoker\FilamentStaticPages\Filament\Resources\ContentResource;
+use Zoker\FilamentStaticPages\Filament\Resources\Contents\ContentResource;
 
 class EditContent extends EditRecord
 {

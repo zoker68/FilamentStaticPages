@@ -1,22 +1,24 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Filament\Resources;
+namespace Zoker\FilamentStaticPages\Filament\Resources\MenuResource;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Zoker\FilamentStaticPages\Classes\FilamentUrlSchema;
-use Zoker\FilamentStaticPages\Filament\Resources;
+use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages\CreateMenu;
+use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages\EditMenu;
+use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages\ListMenus;
 use Zoker\FilamentStaticPages\Models\Menu;
 
 class MenuResource extends Resource
@@ -25,30 +27,27 @@ class MenuResource extends Resource
 
     protected static ?string $slug = 'menus';
 
-    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static ?string $navigationGroup = 'Static Pages';
+    protected static string|\UnitEnum|null $navigationGroup = 'Static Pages';
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        $schema = [
-            TextInput::make('code')
-                ->label('Code')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->maxLength(255)
-                ->columnSpanFull(),
-            Repeater::make('items')
-                ->columnSpanFull()
-                ->label('Menu items')
-                ->schema(self::getItemShema()),
-
-        ];
-
-        return $form
-            ->schema($schema);
+        return $schema
+            ->components([
+                TextInput::make('code')
+                    ->label('Code')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Repeater::make('items')
+                    ->columnSpanFull()
+                    ->label('Menu items')
+                    ->schema(self::getItemShema()),
+            ]);
     }
 
     public static function getItemShema(): array
@@ -93,11 +92,11 @@ class MenuResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -107,9 +106,9 @@ class MenuResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Resources\MenuResource\Pages\ListMenus::route('/'),
-            'create' => Resources\MenuResource\Pages\CreateMenu::route('/create'),
-            'edit' => Resources\MenuResource\Pages\EditMenu::route('/{record}/edit'),
+            'index' => ListMenus::route('/'),
+            'create' => CreateMenu::route('/create'),
+            'edit' => EditMenu::route('/{record}/edit'),
         ];
     }
 

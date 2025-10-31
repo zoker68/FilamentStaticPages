@@ -4,7 +4,7 @@ namespace Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Zoker\FilamentStaticPages\Filament\Resources\MenuResource;
+use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\MenuResource;
 
 class EditMenu extends EditRecord
 {

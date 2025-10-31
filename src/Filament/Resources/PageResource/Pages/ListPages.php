@@ -4,7 +4,7 @@ namespace Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Zoker\FilamentStaticPages\Filament\Resources\PageResource;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\PageResource;
 
 class ListPages extends ListRecords
 {

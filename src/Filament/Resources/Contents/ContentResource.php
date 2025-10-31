@@ -1,18 +1,21 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Filament\Resources;
+namespace Zoker\FilamentStaticPages\Filament\Resources\Contents;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
+use Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages\CreateContent;
+use Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages\EditContent;
+use Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages\ListContents;
 use Zoker\FilamentStaticPages\Models\Content;
 
 class ContentResource extends Resource
@@ -21,16 +24,16 @@ class ContentResource extends Resource
 
     protected static ?string $slug = 'contents';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Static Pages';
+    protected static string|\UnitEnum|null $navigationGroup = 'Static Pages';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('code')
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
@@ -55,11 +58,11 @@ class ContentResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -69,9 +72,9 @@ class ContentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \Zoker\FilamentStaticPages\Filament\Resources\ContentResource\Pages\ListContents::route('/'),
-            'create' => \Zoker\FilamentStaticPages\Filament\Resources\ContentResource\Pages\CreateContent::route('/create'),
-            'edit' => \Zoker\FilamentStaticPages\Filament\Resources\ContentResource\Pages\EditContent::route('/{record}/edit'),
+            'index' => ListContents::route('/'),
+            'create' => CreateContent::route('/create'),
+            'edit' => EditContent::route('/{record}/edit'),
         ];
     }
 

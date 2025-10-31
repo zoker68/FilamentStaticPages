@@ -4,7 +4,7 @@ namespace Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Zoker\FilamentStaticPages\Filament\Resources\PageResource;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\PageResource;
 
 class EditPage extends EditRecord
 {

@@ -3,7 +3,7 @@
 namespace Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use Zoker\FilamentStaticPages\Filament\Resources\PageResource;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\PageResource;
 
 class CreatePage extends CreateRecord
 {

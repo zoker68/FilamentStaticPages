@@ -1,29 +1,32 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Filament\Resources;
+namespace Zoker\FilamentStaticPages\Filament\Resources\PageResource;
 
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
-use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages\CreatePage;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages\EditPage;
+use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages\ListPages;
 use Zoker\FilamentStaticPages\Models\Page;
 
 class PageResource extends Resource
@@ -32,18 +35,18 @@ class PageResource extends Resource
 
     protected static ?string $slug = 'pages';
 
-    protected static ?string $navigationGroup = 'Static Pages';
+    protected static string|\UnitEnum|null $navigationGroup = 'Static Pages';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->columns(1)
-            ->schema([
+            ->components([
                 Tabs::make('Tabs')
                     ->tabs([
-                        Tabs\Tab::make('Settings')
+                        Tab::make('Settings')
                             ->icon('heroicon-s-cog')
                             ->columns(2)
                             ->schema([
@@ -95,7 +98,7 @@ class PageResource extends Resource
                                     ->content(fn (?Page $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
 
                             ]),
-                        Tabs\Tab::make('Blocks')
+                        Tab::make('Blocks')
                             ->icon('heroicon-s-rectangle-stack')
                             ->schema([
                                 Builder::make('content')
@@ -134,11 +137,11 @@ class PageResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -148,9 +151,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
-            'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'index' => ListPages::route('/'),
+            'create' => CreatePage::route('/create'),
+            'edit' => EditPage::route('/{record}/edit'),
         ];
     }
 

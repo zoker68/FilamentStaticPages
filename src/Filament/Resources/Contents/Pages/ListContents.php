@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoker\FilamentStaticPages\Filament\Resources\ContentResource\Pages;
+namespace Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Zoker\FilamentStaticPages\Filament\Resources\ContentResource;
+use Zoker\FilamentStaticPages\Filament\Resources\Contents\ContentResource;
 
 class ListContents extends ListRecords
 {
