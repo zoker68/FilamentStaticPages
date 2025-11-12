@@ -4,12 +4,13 @@ namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class HeadingBlock extends BlockComponent
 {
-    public static string $label = 'Heading';
+    public static ?string $label = 'Heading';
 
     public static string $viewTemplate = 'components.heading';
 
@@ -17,6 +18,7 @@ class HeadingBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-exclamation-triangle';
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [
@@ -44,7 +46,7 @@ class HeadingBlock extends BlockComponent
         ];
     }
 
-    public static function getBlockHeader(array $state): string
+    public static function getBlockHeader(array $state): string // @phpstan-ignore-line
     {
         return static::getLabel() . ($state['heading'] ? ' | ' . Str::of($state['heading'])->limit(60) : '');
     }

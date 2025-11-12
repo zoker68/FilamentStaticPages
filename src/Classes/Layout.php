@@ -4,6 +4,9 @@ namespace Zoker\FilamentStaticPages\Classes;
 
 class Layout
 {
+    /**
+     * @return array<string, string>
+     */
     public static function getLayoutOptions(): array
     {
         $layouts = glob(resource_path('views/components/layouts/*.blade.php'));

@@ -8,14 +8,15 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class SliderBlock extends BlockComponent
 {
-    public static string $label = 'Slider (Blocks)';
+    public static ?string $label = 'Slider (Blocks)';
 
     public static string $viewTemplate = 'components.slider';
 
@@ -37,6 +38,7 @@ class SliderBlock extends BlockComponent
         return parent::render();
     }
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [

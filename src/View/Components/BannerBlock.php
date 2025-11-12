@@ -5,13 +5,14 @@ namespace Zoker\FilamentStaticPages\View\Components;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class BannerBlock extends BlockComponent
 {
-    public static string $label = 'Banner';
+    public static ?string $label = 'Banner';
 
     public static string $viewTemplate = 'components.banner';
 
@@ -26,6 +27,7 @@ class BannerBlock extends BlockComponent
         return parent::render();
     }
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [
@@ -62,7 +64,7 @@ class BannerBlock extends BlockComponent
         ];
     }
 
-    public static function getBlockHeader(array $state): string
+    public static function getBlockHeader(array $state): string // @phpstan-ignore-line
     {
         return static::getLabel() . ($state['alt'] ? ' | ' . $state['alt'] : '');
     }

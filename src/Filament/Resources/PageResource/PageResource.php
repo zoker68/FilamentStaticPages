@@ -8,10 +8,10 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -88,14 +88,14 @@ class PageResource extends Resource
                                 Toggle::make('published')
                                     ->label('Published'),
 
-                                Placeholder::make('created_at')
+                                TextEntry::make('created_at')
                                     ->label('Created Date')
                                     ->columnStart(1)
-                                    ->content(fn (?Page $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                                    ->state(fn (?Page $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
-                                Placeholder::make('updated_at')
+                                TextEntry::make('updated_at')
                                     ->label('Last Modified Date')
-                                    ->content(fn (?Page $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                                    ->state(fn (?Page $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
 
                             ]),
                         Tab::make('Blocks')

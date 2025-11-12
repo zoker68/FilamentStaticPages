@@ -2,8 +2,16 @@
 
 namespace Zoker\FilamentStaticPages\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $code
+ * @property array<array<string, mixed>> $items
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Menu extends Model
 {
     const string CACHE_KEY = 'filament-static-pages-menu';
@@ -42,6 +50,9 @@ class Menu extends Model
         return self::CACHE_KEY . ':' . strtolower($code);
     }
 
+    /**
+     * @param  array<string, mixed>  $item
+     */
     public function getUrl(array $item): ?string
     {
         if (! isset($item['url'][0])) {
@@ -57,6 +68,10 @@ class Menu extends Model
         };
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $urlSettings
+     * @return array<string, mixed>
+     */
     public static function getParamsForRoute(array $urlSettings): array
     {
         $params = [];

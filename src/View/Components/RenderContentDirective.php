@@ -9,6 +9,7 @@ use Zoker\FilamentStaticPages\Models\Page;
 
 class RenderContentDirective extends Component
 {
+    /** @var array<array-key, array<string, mixed>> */
     public array $blocks = [];
 
     public function __construct(string $code, public Page $page)
@@ -18,6 +19,7 @@ class RenderContentDirective extends Component
 
     public function render(): View
     {
+        /** @phpstan-ignore-next-line */
         return view('fsp::render-content-directive');
     }
 }

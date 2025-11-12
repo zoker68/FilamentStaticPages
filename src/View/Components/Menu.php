@@ -17,6 +17,7 @@ class Menu extends Component
 
     public function render(): View
     {
+        /** @phpstan-ignore-next-line */
         return view('fsp::components.menu');
     }
 }

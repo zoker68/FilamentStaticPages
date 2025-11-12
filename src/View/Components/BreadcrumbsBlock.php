@@ -5,6 +5,7 @@ namespace Zoker\FilamentStaticPages\View\Components;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Illuminate\Contracts\View\View;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 use Zoker\FilamentStaticPages\Classes\FilamentUrlSchema;
@@ -13,7 +14,7 @@ use Zoker\FilamentStaticPages\Models\Page;
 
 class BreadcrumbsBlock extends BlockComponent
 {
-    public static string $label = 'Breadcrumbs';
+    public static ?string $label = 'Breadcrumbs';
 
     public static string $viewTemplate = 'components.breadcrumbs';
 
@@ -30,9 +31,9 @@ class BreadcrumbsBlock extends BlockComponent
         return parent::render();
     }
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
-
         return [
             Repeater::make('breadcrumbs')
                 ->label('Breadcrumbs')
@@ -55,6 +56,7 @@ class BreadcrumbsBlock extends BlockComponent
         ];
     }
 
+    /** @return array<array-key, array<string, mixed>> */
     public static function generateDefaultBreadcrumbs(Page $page): array
     {
         $breadcrumbs = [];

@@ -2,6 +2,7 @@
 
 namespace Zoker\FilamentStaticPages\Classes;
 
+use Filament\Forms\Components\Builder\Block;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
@@ -15,8 +16,16 @@ abstract class BlockComponent extends Component
 
     public static string $icon;
 
+    public static ?string $label = null;
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function __construct(public array $data, public ?Page $page = null) {}
 
+    /**
+     * @return array<array-key, Block>
+     */
     abstract public static function getSchema(): array;
 
     public function render(): View
@@ -26,7 +35,7 @@ abstract class BlockComponent extends Component
 
     public static function getLabel(): string
     {
-        if (isset(static::$label)) {
+        if (static::$label) {
             return static::$label;
         }
 

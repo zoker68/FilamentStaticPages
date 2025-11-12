@@ -4,12 +4,12 @@ namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Support\Str;
+use Filament\Schemas\Components\Component;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ContentBlock extends BlockComponent
 {
-    public static string $label = 'HTML Block';
+    public static ?string $label = 'HTML Block';
 
     public static string $viewNamespace = 'fsp';
 
@@ -17,6 +17,7 @@ class ContentBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-document-text';
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [
@@ -30,8 +31,8 @@ class ContentBlock extends BlockComponent
         ];
     }
 
-    public static function getBlockHeader(array $state): string
+    public static function getBlockHeader(array $state): string // @phpstan-ignore-line
     {
-        return static::getLabel() . ($state['content'] ? ' | ' . Str::of($state['content'])->stripTags()->limit(60) : '');
+        return static::getLabel();
     }
 }

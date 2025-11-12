@@ -2,19 +2,20 @@
 
 namespace Zoker\FilamentStaticPages\View\Components;
 
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Placeholder;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class MetaBlock extends BlockComponent
 {
-    public static string $label = 'Meta Data';
+    public static ?string $label = 'Meta Data';
 
     public static string $viewTemplate = 'components.meta-data';
 
@@ -22,6 +23,7 @@ class MetaBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-code-bracket';
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [
@@ -61,9 +63,10 @@ class MetaBlock extends BlockComponent
         return 1;
     }
 
+    /** @return array<array-key, Component> */
     public static function getDescriptionField(): array
     {
-        $fiedls = [
+        $fields = [
             Textarea::make('description')
                 ->label('Description')
                 ->rows(6)
@@ -74,8 +77,8 @@ class MetaBlock extends BlockComponent
         ];
 
         if (class_exists(\Zoker\Shop\Classes\AIQuery::class)) {
-            $fiedls[] =
-                Placeholder::make('generateAI')
+            $fields[] =
+                TextEntry::make('generateAI')
                     ->label('Generate SEO with AI')
                     ->key('generateAI')
                     ->hintAction(
@@ -84,7 +87,7 @@ class MetaBlock extends BlockComponent
                             ->action(function (Set $set, Get $get) {
                                 $pageSettings = $get('../../../');
 
-                                $result = (array) json_decode(\Zoker\Shop\Classes\AIQuery::seoTitleDescriptionForMetaPage($pageSettings));
+                                $result = (array) json_decode(\Zoker\Shop\Classes\AIQuery::seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
 
                                 $set('title', $result['title'] . ' | ' . config('app.name'));
                                 $set('description', $result['description']);
@@ -92,6 +95,6 @@ class MetaBlock extends BlockComponent
                     );
         }
 
-        return $fiedls;
+        return $fields;
     }
 }

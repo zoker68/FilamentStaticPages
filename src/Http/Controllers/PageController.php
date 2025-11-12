@@ -2,12 +2,12 @@
 
 namespace Zoker\FilamentStaticPages\Http\Controllers;
 
+use Illuminate\View\View;
 use Zoker\FilamentStaticPages\Models\Page;
-use Zoker\Shop\Http\Controllers\Controller;
 
-class PageController extends Controller
+class PageController
 {
-    public function __invoke()
+    public function __invoke(): View
     {
         $routeName = request()->route()->getName();
         $page = null;
@@ -23,6 +23,7 @@ class PageController extends Controller
             abort(404);
         }
 
+        /** @phpstan-ignore-next-line */
         return view('fsp::blocks', compact('page'));
     }
 }

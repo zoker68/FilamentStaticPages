@@ -15,6 +15,9 @@ use Zoker\FilamentStaticPages\View\Components\SliderBlock;
 
 class BlocksComponentRegistry
 {
+    /**
+     * @var array<string, string>
+     */
     public static array $components = [
         'Content' => ContentBlock::class,
         'Partners' => PartnersBlock::class,
@@ -43,11 +46,17 @@ class BlocksComponentRegistry
         return static::$components[$name] ?? null;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getComponents(): array
     {
         return static::$components;
     }
 
+    /**
+     * @return array<array-key, Block>
+     */
     public static function getFilamentSchema(): array
     {
         $options = [];

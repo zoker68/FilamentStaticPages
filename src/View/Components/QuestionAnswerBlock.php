@@ -5,11 +5,12 @@ namespace Zoker\FilamentStaticPages\View\Components;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class QuestionAnswerBlock extends BlockComponent
 {
-    public static string $label = 'Question & Answer';
+    public static ?string $label = 'Question & Answer';
 
     public static string $viewTemplate = 'components.question-answer';
 
@@ -17,6 +18,7 @@ class QuestionAnswerBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-question-mark-circle';
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [

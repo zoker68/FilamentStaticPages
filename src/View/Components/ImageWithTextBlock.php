@@ -7,6 +7,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ImageWithTextBlock extends BlockComponent
 {
-    public static string $label = 'Image with text';
+    public static ?string $label = 'Image with text';
 
     public static string $viewTemplate = 'components.image-with-text';
 
@@ -34,6 +35,7 @@ class ImageWithTextBlock extends BlockComponent
         return parent::getTemplate() . '.' . $this->data['template'];
     }
 
+    /** @return array<array-key, Component> */
     public static function getSchema(): array
     {
         return [
@@ -99,7 +101,7 @@ class ImageWithTextBlock extends BlockComponent
         ];
     }
 
-    public static function getBlockHeader(array $state): string
+    public static function getBlockHeader(array $state): string // @phpstan-ignore-line
     {
         if (count($state['blocks']) === 0) {
             return static::getLabel();

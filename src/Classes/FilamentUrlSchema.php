@@ -6,13 +6,18 @@ use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Utilities\Get;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Models\Page;
 
 class FilamentUrlSchema
 {
+    /**
+     * @return array<array-key, Component>
+     */
     public static function getSchema(): array
     {
         return [
@@ -38,6 +43,9 @@ class FilamentUrlSchema
         ];
     }
 
+    /**
+     * @return array<array-key, Component>
+     */
     public static function getRouteUrlSchema(): array
     {
         return [
@@ -58,6 +66,9 @@ class FilamentUrlSchema
         ];
     }
 
+    /**
+     * @return Collection<string, string>
+     */
     private static function getRouteOptions()
     {
         return collect(Route::getRoutes()->getRoutesByName())
@@ -65,13 +76,16 @@ class FilamentUrlSchema
                 $excludedPrefixes = ['filament.', 'fsp.', 'debugbar.', 'livewire.'];
 
                 return ! Str::startsWith($route->getName(), $excludedPrefixes)
-                    && (in_array('GET', $route->methods() ?? []) || in_array('HEAD', $route->methods()));
+                    && (in_array('GET', $route->methods()) || in_array('HEAD', $route->methods()));
             })->mapWithKeys(function ($route) {
                 return [$route->getName() => $route->getName()];
             });
     }
 
-    private static function getSchemaForRoute(?string $route): ?array
+    /**
+     * @return array<array-key, Component>
+     */
+    private static function getSchemaForRoute(?string $route): array
     {
         $fields = [];
 
@@ -86,6 +100,9 @@ class FilamentUrlSchema
         return $fields;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function getParamsForRoute(string $name): array
     {
         return Route::getRoutes()->getByName($name)->bindingFields();

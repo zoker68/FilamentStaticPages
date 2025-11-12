@@ -2,6 +2,7 @@
 
 namespace Zoker\FilamentStaticPages\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,17 @@ use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Observers\PageObserver;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $url
+ * @property string $layout
+ * @property bool $published
+ * @property int $parent_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property ?self $parent
+ */
 #[ObservedBy(PageObserver::class)]
 class Page extends Model
 {
@@ -29,7 +41,7 @@ class Page extends Model
         'published',
     ];
 
-    public function parent(): BelongsTo
+    public function parent(): BelongsTo // @phpstan-ignore-line
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
@@ -39,6 +51,7 @@ class Page extends Model
         return config('filament-static-pages.table_prefix') . 'pages';
     }
 
+    /** @return array<string> */
     public static function getAllRoutes(): array
     {
         if (! Schema::hasTable((new self)->getTable())) {
@@ -52,6 +65,10 @@ class Page extends Model
         );
     }
 
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
     public function scopeUrl(Builder $query, string $url): Builder
     {
         if (empty($url)) {
@@ -61,6 +78,10 @@ class Page extends Model
         return $query->where('url', $url);
     }
 
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('published', true);
