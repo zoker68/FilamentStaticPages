@@ -10,6 +10,10 @@ class Layout
     public static function getLayoutOptions(): array
     {
         $layouts = glob(resource_path('views/components/layouts/*.blade.php'));
+        if (! $layouts) {
+            return [];
+        }
+
         $layouts = array_map(function ($layout) {
             $layout = str_replace('.blade.php', '', $layout);
 

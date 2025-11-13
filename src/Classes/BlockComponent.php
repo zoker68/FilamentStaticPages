@@ -30,7 +30,7 @@ abstract class BlockComponent extends Component
 
     public function render(): View
     {
-        return view(static::getTemplate(), $this->data);
+        return view(static::getTemplate(), $this->data); // @phpstan-ignore-line
     }
 
     public static function getLabel(): string

@@ -63,7 +63,7 @@ class PageResource extends Resource
                                 TextInput::make('url')
                                     ->label('URL')
                                     ->prefix(function (): string {
-                                        return url(config('filament-static-pages.route_prefix')) . '/';
+                                        return url()->to(config('filament-static-pages.route_prefix')) . '/';
                                     })
                                     ->unique(ignoreRecord: true),
 
@@ -127,7 +127,7 @@ class PageResource extends Resource
                     ->label('URL')
                     ->searchable()
                     ->sortable()
-                    ->url(fn (Page $record) => url(config('filament-static-pages.route_prefix')) . '/' . $record->url)
+                    ->url(fn (Page $record) => url()->to(config('filament-static-pages.route_prefix')) . '/' . $record->url)
                     ->openUrlInNewTab(),
 
                 ToggleColumn::make('published')
