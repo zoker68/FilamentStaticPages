@@ -68,7 +68,8 @@ class ImageWithTextBlock extends BlockComponent
                     RichEditor::make('text')
                         ->label('Text')
                         ->columnStart(1)
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->json(false),
 
                     FileUpload::make('image')
                         ->label('Image')

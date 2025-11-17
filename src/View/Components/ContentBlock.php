@@ -23,7 +23,8 @@ class ContentBlock extends BlockComponent
         return [
             RichEditor::make('content')
                 ->label('Content')
-                ->columnSpanFull(),
+                ->columnSpanFull()
+                ->json(false),
 
             TextInput::make('css_class')
                 ->label('CSS Class')

@@ -111,7 +111,8 @@ class SliderBlock extends BlockComponent
                     'text' => RichEditor::make('text')
                         ->label('Text')
                         ->columnStart(1)
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->json(false),
 
                     'image' => FileUpload::make('image')
                         ->label('Image')
