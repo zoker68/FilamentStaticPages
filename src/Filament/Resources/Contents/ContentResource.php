@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages\CreateContent;
 use Zoker\FilamentStaticPages\Filament\Resources\Contents\Pages\EditContent;
@@ -20,6 +21,8 @@ use Zoker\FilamentStaticPages\Models\Content;
 
 class ContentResource extends Resource
 {
+    use Translatable;
+
     protected static ?string $model = Content::class;
 
     protected static ?string $slug = 'contents';

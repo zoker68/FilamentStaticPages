@@ -9,21 +9,29 @@ class PageController
 {
     public function __invoke(): View
     {
-        $routeName = request()->route()->getName();
-        $page = null;
-
-        if (str_starts_with($routeName, 'fsp.')) {
-            $pageUrl = substr($routeName, 4);
-            $page = Page::url($pageUrl)->published()->firstOrFail();
-        } elseif ($routeName === 'index' || $routeName === 'multisite.index') {
-            $page = Page::whereNull('url')->firstOrFail();
-        }
-
-        if (! $page) {
-            abort(404);
-        }
+        $page = $this->resolvePage();
 
         /** @phpstan-ignore-next-line */
         return view('fsp::blocks', compact('page'));
+    }
+
+    private function resolvePage(): Page
+    {
+        $routeName = request()->route()->getName();
+        $pageUrl = $this->extractPageUrl($routeName);
+
+        return $pageUrl === null
+            ? Page::whereNull('url')->published()->firstOrFail()
+            : Page::url($pageUrl)->published()->firstOrFail();
+    }
+
+    private function extractPageUrl(string $routeName): ?string
+    {
+        return match (true) {
+            str_starts_with($routeName, 'multisite.fsp.') => substr($routeName, 14),
+            str_starts_with($routeName, 'fsp.') => substr($routeName, 4),
+            in_array($routeName, ['index', 'multisite.index']) => null,
+            default => abort(404),
+        };
     }
 }

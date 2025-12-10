@@ -3,6 +3,7 @@
 /**
  * Configuration file for the Filament Static Pages package.
  */
+
 return [
     /**
      * The prefix used for all static page routes.
@@ -24,6 +25,7 @@ return [
      */
     'middlewares' => [
         'web',
+        \Zoker\FilamentMultisite\Http\Middleware\MultisiteMiddleware::class,
         class_exists(\Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class) ? \Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class : null, // TODO: Delete when Shop is installed
     ],
 

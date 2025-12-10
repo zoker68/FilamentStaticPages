@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Zoker\FilamentStaticPages\Classes\FilamentUrlSchema;
 use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages\CreateMenu;
 use Zoker\FilamentStaticPages\Filament\Resources\MenuResource\Pages\EditMenu;
@@ -24,6 +25,8 @@ use Zoker\FilamentStaticPages\Models\Menu;
 
 class MenuResource extends Resource
 {
+    use Translatable;
+
     protected static ?string $model = Menu::class;
 
     protected static ?string $slug = 'menus';

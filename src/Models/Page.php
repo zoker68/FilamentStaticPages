@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Schema;
 use InvalidArgumentException;
+use Zoker\FilamentMultisite\Traits\HasMultisite;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Observers\PageObserver;
 
 /**
  * @property int $id
+ * @property int $site_id
  * @property string $name
  * @property string $url
  * @property string $layout
@@ -27,6 +29,8 @@ use Zoker\FilamentStaticPages\Observers\PageObserver;
 #[ObservedBy(PageObserver::class)]
 class Page extends Model
 {
+    use HasMultisite;
+
     const string CACHE_KEY_ROUTES = 'filament_static_pages_routes';
 
     protected $casts = [
@@ -52,16 +56,15 @@ class Page extends Model
     }
 
     /** @return array<string> */
-    public static function getAllRoutes(): array
+    public static function getAllRoutes(?int $siteId = null): array
     {
         if (! Schema::hasTable((new self)->getTable())) {
             return [];
         }
 
-        return cache()->remember(
+        return cache()->rememberForever(
             self::CACHE_KEY_ROUTES,
-            now()->addMinutes(10),
-            fn () => self::published()->pluck('url')->toArray()
+            fn () => self::allSites()->with('site')->published()->get()->keyBy('url')->toArray()
         );
     }
 

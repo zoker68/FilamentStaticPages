@@ -4,6 +4,7 @@ namespace Zoker\FilamentStaticPages\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * @property int $id
@@ -14,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Menu extends Model
 {
+    use HasTranslations;
+
+    public array $translatable = ['items'];
+
     const string CACHE_KEY = 'filament-static-pages-menu';
 
     protected $casts = [
@@ -55,15 +60,11 @@ class Menu extends Model
      */
     public function getUrl(array $item): ?string
     {
-        if (! isset($item['url'][0])) {
-            return null;
-        }
-
-        $urlSettings = $item['url'][0];
+        $urlSettings = $item['url'][0] ?? $item['url'];
 
         return match ($urlSettings['type']) {
-            'fsp' => route('fsp.' . $urlSettings['data']['page']),
-            'route' => route($urlSettings['data']['route'], self::getParamsForRoute($urlSettings)),
+            'fsp' => multisite_route('fsp.' . $urlSettings['data']['page']),
+            'route' => multisite_route($urlSettings['data']['route'], self::getParamsForRoute($urlSettings)),
             default => $urlSettings['data']['url'],
         };
     }

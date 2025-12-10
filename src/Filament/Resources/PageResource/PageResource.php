@@ -22,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Zoker\FilamentMultisite\Traits\HasMultisiteResource;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages\CreatePage;
@@ -31,6 +32,8 @@ use Zoker\FilamentStaticPages\Models\Page;
 
 class PageResource extends Resource
 {
+    use HasMultisiteResource;
+
     protected static ?string $model = Page::class;
 
     protected static ?string $slug = 'pages';
@@ -63,7 +66,12 @@ class PageResource extends Resource
                                 TextInput::make('url')
                                     ->label('URL')
                                     ->prefix(function (): string {
-                                        return url()->to(config('filament-static-pages.route_prefix')) . '/';
+                                        $site = \Zoker\FilamentMultisite\Facades\FilamentSiteManager::getCurrentSite();
+                                        $baseUrl = $site->hostWithScheme;
+                                        $prefix = $site->prefix ? '/' . $site->prefix : '';
+                                        $routePrefix = config('filament-static-pages.route_prefix') ? '/' . config('filament-static-pages.route_prefix') : '';
+
+                                        return $baseUrl . $prefix . $routePrefix . '/';
                                     })
                                     ->unique(ignoreRecord: true),
 
@@ -116,7 +124,7 @@ class PageResource extends Resource
     {
         return $table
             ->defaultSort('parent_id', 'asc')
-            ->modifyQueryUsing(fn ($query) => $query->with('parent'))
+            ->modifyQueryUsing(fn ($query) => $query->with(['parent', 'site']))
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -127,7 +135,14 @@ class PageResource extends Resource
                     ->label('URL')
                     ->searchable()
                     ->sortable()
-                    ->url(fn (Page $record) => url()->to(config('filament-static-pages.route_prefix')) . '/' . $record->url)
+                    ->url(function (Page $record): string {
+                        $site = $record->site;
+                        $baseUrl = $site->hostWithScheme;
+                        $prefix = $site->prefix ? '/' . $site->prefix : '';
+                        $routePrefix = config('filament-static-pages.route_prefix') ? '/' . config('filament-static-pages.route_prefix') : '';
+
+                        return $baseUrl . $prefix . $routePrefix . '/' . $record->url;
+                    })
                     ->openUrlInNewTab(),
 
                 ToggleColumn::make('published')

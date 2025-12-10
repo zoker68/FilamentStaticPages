@@ -73,7 +73,7 @@ class FilamentUrlSchema
     {
         return collect(Route::getRoutes()->getRoutesByName())
             ->filter(function (\Illuminate\Routing\Route $route) {
-                $excludedPrefixes = ['filament.', 'fsp.', 'debugbar.', 'livewire.'];
+                $excludedPrefixes = ['filament.', 'fsp.', 'debugbar.', 'livewire.', 'multisite.'];
 
                 return ! Str::startsWith($route->getName(), $excludedPrefixes)
                     && (in_array('GET', $route->methods()) || in_array('HEAD', $route->methods()));
