@@ -14,11 +14,12 @@ return new class extends Migration
             $table->foreignIdFor(Site::class)
                 ->nullable()
                 ->after('id');
+        });
+        Page::query()->update([
+            'site_id' => Site::query()->first()->id,
+        ]);
 
-            Page::query()->update([
-                'site_id' => Site::query()->first()->id,
-            ]);
-
+        Schema::table((new Page)->getTable(), function (Blueprint $table) {
             $table->foreign('site_id')
                 ->references('id')
                 ->on((new Site)->getTable())
