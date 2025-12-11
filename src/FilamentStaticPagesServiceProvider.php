@@ -11,7 +11,6 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name('filament-static-pages')
-            ->hasViews()
             ->hasConfigFile()
             ->hasViews('fsp')
             ->hasMigrations([
@@ -25,8 +24,17 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');
 
         Blade::directive('fspContent', function ($code) {
+            $code = trim($code, '\'"');
+
             return "<?php echo \Blade::render('<x-fsp::render-content-directive code=\"$code\" />'); ?>";
         });
+
+        Blade::directive('fspMenu', function ($code) {
+            $code = trim($code, '\'"');
+
+            return "<?php echo \Blade::render('<x-fsp::menu code=\"$code\" />'); ?>";
+        });
+
     }
 
     public function bootingPackage(): void
