@@ -33,6 +33,8 @@ class Page extends Model
 
     const string CACHE_KEY_ROUTES = 'filament_static_pages_routes';
 
+    const string CACHE_KEY_ALLOWED_URLS = 'filament_static_pages_allowed_urls';
+
     protected $casts = [
         'published' => 'boolean',
         'content' => 'array',
@@ -68,11 +70,29 @@ class Page extends Model
         );
     }
 
+    /** @return array<string> */
+    public static function getAllowedUrls(): array
+    {
+        if (! Schema::hasTable((new self)->getTable())) {
+            return [];
+        }
+
+        return cache()->rememberForever(
+            self::CACHE_KEY_ALLOWED_URLS,
+            fn () => self::allSites()
+                ->published()
+                ->pluck('url')
+                ->unique()
+                ->values()
+                ->toArray()
+        );
+    }
+
     /**
      * @param  Builder<self>  $query
      * @return Builder<self>
      */
-    public function scopeUrl(Builder $query, string $url): Builder
+    public function scopeUrl(Builder $query, ?string $url): Builder
     {
         if (empty($url)) {
             return $query->whereNull('url');

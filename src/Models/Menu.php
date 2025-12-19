@@ -63,7 +63,7 @@ class Menu extends Model
         $urlSettings = $item['url'][0] ?? $item['url'];
 
         return match ($urlSettings['type']) {
-            'fsp' => multisite_route('fsp.' . $urlSettings['data']['page']),
+            'fsp' => multisite_route('fsp.page', ['page' => $urlSettings['data']['page']]),
             'route' => multisite_route($urlSettings['data']['route'], self::getParamsForRoute($urlSettings)),
             default => $urlSettings['data']['url'],
         };
