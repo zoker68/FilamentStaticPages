@@ -12,7 +12,7 @@ Route::middleware(['web'])->group(function () {
             Route::middleware(config('filament-static-pages.middlewares'))
                 ->domain($route['site']['domain'])
                 ->prefix(config('filament-static-pages.route_prefix'))
-                ->name('fsp.' . $route['url'])
+                ->name(($route['site']['domain'] ? $route['site']['domain'] . '.' : '') . 'fsp.' . $route['url'])
                 ->get($route['url'] ?? '/', PageController::class);
         }
     });

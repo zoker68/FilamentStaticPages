@@ -22,6 +22,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
+use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Traits\HasMultisiteResource;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
@@ -73,7 +75,9 @@ class PageResource extends Resource
 
                                         return $baseUrl . $prefix . $routePrefix . '/';
                                     })
-                                    ->unique(ignoreRecord: true),
+                                    ->unique(modifyRuleUsing: function (Unique $rule) {
+                                        return $rule->where('site_id', FilamentSiteManager::getCurrentSite()->id);
+                                    }),
 
                                 Select::make('parent_id')
                                     ->label('Parent page')

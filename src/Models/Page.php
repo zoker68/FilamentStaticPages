@@ -64,7 +64,7 @@ class Page extends Model
 
         return cache()->rememberForever(
             self::CACHE_KEY_ROUTES,
-            fn () => self::allSites()->with('site')->published()->get()->keyBy('url')->toArray()
+            fn () => self::allSites()->with('site')->published()->get()->toArray()
         );
     }
 
