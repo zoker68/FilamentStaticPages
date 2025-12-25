@@ -10,8 +10,6 @@ use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class HeadingBlock extends BlockComponent
 {
-    public static ?string $label = 'Heading';
-
     public static string $viewTemplate = 'components.heading';
 
     public static string $viewNamespace = 'fsp';
@@ -23,12 +21,12 @@ class HeadingBlock extends BlockComponent
     {
         return [
             TextInput::make('heading')
-                ->label('Heading')
+                ->label(__('fsp::lang.blocks.heading'))
                 ->required()
                 ->columnSpanFull(),
 
             Select::make('size')
-                ->label('Size')
+                ->label(__('fsp::lang.blocks.size'))
                 ->options([
                     'h1' => 'H1',
                     'h2' => 'H2',
@@ -42,8 +40,13 @@ class HeadingBlock extends BlockComponent
                 ->required(),
 
             TextInput::make('css_class')
-                ->label('CSS Class'),
+                ->label(__('fsp::lang.blocks.css_class')),
         ];
+    }
+
+    public static function getLabel(): string
+    {
+        return __('fsp::lang.blocks.heading');
     }
 
     public static function getBlockHeader(array $state): string // @phpstan-ignore-line

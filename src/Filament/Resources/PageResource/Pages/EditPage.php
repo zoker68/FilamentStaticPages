@@ -4,6 +4,7 @@ namespace Zoker\FilamentStaticPages\Filament\Resources\PageResource\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Zoker\FilamentStaticPages\Filament\Actions\PageTransferAction;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\PageResource;
 
 class EditPage extends EditRecord
@@ -23,6 +24,7 @@ class EditPage extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            PageTransferAction::make(),
             DeleteAction::make(),
         ];
     }

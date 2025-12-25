@@ -11,6 +11,6 @@ class PageController
     {
         $pageModel = Page::url($page)->published()->firstOrFail();
 
-        return view('fsp::blocks', ['page' => $pageModel]);
+        return view('fsp::blocks', ['page' => $pageModel]); // @phpstan-ignore-line
     }
 }

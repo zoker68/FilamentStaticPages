@@ -17,11 +17,12 @@ use Zoker\FilamentStaticPages\Observers\PageObserver;
 /**
  * @property int $id
  * @property int $site_id
+ * @property int $parent_id
  * @property string $name
  * @property string $url
  * @property string $layout
+ * @property array<array<string, mixed>> $content
  * @property bool $published
- * @property int $parent_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?self $parent
@@ -54,7 +55,7 @@ class Page extends Model
 
     public function getTable(): string
     {
-        return config('filament-static-pages.table_prefix') . 'pages';
+        return config('fsp.table_prefix') . 'pages';
     }
 
     /** @return array<string> */

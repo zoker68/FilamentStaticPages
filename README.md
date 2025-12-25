@@ -10,19 +10,19 @@ composer require zoker/filament-static-pages
 ## Publish config
 
 ```bash
-php artisan vendor:publish --tag=filament-static-pages-config
+php artisan vendor:publish --tag=fsp-config
 ```
 
 ## Publish views
 
 ```bash
-php artisan vendor:publish --tag=filament-static-pages-views
+php artisan vendor:publish --tag=fsp-views
 ```
 
 ## Publish migrations
 
 ```bash
-php artisan vendor:publish --tag=filament-static-pages-migrations
+php artisan vendor:publish --tag=fsp-migrations
 ```
 
 ## Migrations

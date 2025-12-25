@@ -12,8 +12,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('/', PageController::class)->name('index');
         }
 
-        Route::middleware(config('filament-static-pages.middlewares'))
-            ->prefix(config('filament-static-pages.route_prefix'))
+        Route::middleware(config('fsp.middlewares'))
+            ->prefix(config('fsp.route_prefix'))
             ->name('fsp.')
             ->group(function () use ($allowedUrls) {
                 Route::get('{page}', PageController::class)

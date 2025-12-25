@@ -6,6 +6,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Zoker\FilamentMultisite\Filament\Actions\SiteSwitcher;
 use Zoker\FilamentMultisite\Traits\Translatable\Resources\Pages\TranslatableListRecord;
+use Zoker\FilamentStaticPages\Filament\Actions\ImportPageAction;
 use Zoker\FilamentStaticPages\Filament\Resources\PageResource\PageResource;
 
 class ListPages extends ListRecords
@@ -18,6 +19,7 @@ class ListPages extends ListRecords
     {
         return [
             SiteSwitcher::make(),
+            ImportPageAction::make(),
             CreateAction::make(),
         ];
     }

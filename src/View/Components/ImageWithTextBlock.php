@@ -15,8 +15,6 @@ use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ImageWithTextBlock extends BlockComponent
 {
-    public static ?string $label = 'Image with text';
-
     public static string $viewTemplate = 'components.image-with-text';
 
     public static string $viewNamespace = 'fsp';
@@ -25,7 +23,7 @@ class ImageWithTextBlock extends BlockComponent
 
     public function render(): View
     {
-        $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
+        $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');
 
         return parent::render();
     }
@@ -40,20 +38,20 @@ class ImageWithTextBlock extends BlockComponent
     {
         return [
             Select::make('template')
-                ->label('Layout')
+                ->label(__('fsp::lang.blocks.layout'))
                 ->columnSpanFull()
                 ->options([
-                    'small-icon' => 'Small block with icon',
-                    'wide-image' => 'Wide block with image',
+                    'small-icon' => __('fsp::lang.blocks.small_block_with_icon'),
+                    'wide-image' => __('fsp::lang.blocks.wide_block_with_image'),
                 ])
                 ->default('small-icon')
                 ->required()
                 ->selectablePlaceholder(false),
 
             Repeater::make('blocks')
-                ->label('Blocks')
+                ->label(__('fsp::lang.blocks.blocks'))
                 ->columnSpanFull()
-                ->addActionLabel('Add block')
+                ->addActionLabel(__('fsp::lang.blocks.add_block'))
                 ->minItems(1)
                 ->collapsed()
                 ->cloneable()
@@ -61,35 +59,35 @@ class ImageWithTextBlock extends BlockComponent
                 ->columns(3)
                 ->schema([
                     TextInput::make('heading')
-                        ->label('Heading')
+                        ->label(__('fsp::lang.blocks.heading'))
                         ->maxValue(255)
                         ->columnSpanFull(),
 
                     RichEditor::make('text')
-                        ->label('Text')
+                        ->label(__('fsp::lang.blocks.text'))
                         ->columnStart(1)
                         ->columnSpan(2)
                         ->json(false),
 
                     FileUpload::make('image')
-                        ->label('Image')
+                        ->label(__('fsp::lang.blocks.image'))
                         ->image()
-                        ->disk(config('filament-static-pages.disk'))
+                        ->disk(config('fsp.disk'))
                         ->directory('blocks-images')
                         ->maxSize(10 * 1024)
                         ->imageEditor()
                         ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
 
                     TextInput::make('link.text')
-                        ->label('Link Text')
+                        ->label(__('fsp::lang.blocks.link_text'))
                         ->maxValue(255),
                     TextInput::make('link.url')
-                        ->label('URL')
+                        ->label(__('fsp::lang.blocks.url'))
                         ->maxValue(255)
                         ->url(),
 
                     Select::make('link.target')
-                        ->label('Link Target')
+                        ->label(__('fsp::lang.blocks.link_target'))
                         ->default('_self')
                         ->selectablePlaceholder(false)
                         ->options([
@@ -100,6 +98,11 @@ class ImageWithTextBlock extends BlockComponent
                         ]),
                 ]),
         ];
+    }
+
+    public static function getLabel(): string
+    {
+        return __('fsp::lang.blocks.image_with_text');
     }
 
     public static function getBlockHeader(array $state): string // @phpstan-ignore-line

@@ -6,6 +6,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Zoker\FilamentMultisite\Filament\Actions\SiteSwitcher;
 use Zoker\FilamentMultisite\Traits\Translatable\Resources\Pages\TranslatableEditRecord;
+use Zoker\FilamentStaticPages\Filament\Actions\ContentTransferAction;
 use Zoker\FilamentStaticPages\Filament\Resources\Contents\ContentResource;
 
 class EditContent extends EditRecord
@@ -18,6 +19,7 @@ class EditContent extends EditRecord
     {
         return [
             SiteSwitcher::make(),
+            ContentTransferAction::make(),
             DeleteAction::make(),
         ];
     }

@@ -14,7 +14,7 @@ class StaticPages implements Plugin
 
     public function getId(): string
     {
-        return 'filament-static-pages';
+        return 'fsp';
     }
 
     public function register(Panel $panel): void

@@ -66,7 +66,6 @@ class BlocksComponentRegistry
                 ->label(function (?array $state) use ($component): string {
                     if (method_exists($component, 'getBlockHeader') && is_array($state)) {
                         return $component::getBlockHeader($state);
-
                     }
 
                     return $component::getLabel();

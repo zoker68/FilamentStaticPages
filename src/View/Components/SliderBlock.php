@@ -26,7 +26,7 @@ class SliderBlock extends BlockComponent
 
     public function render(): View
     {
-        $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
+        $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');
 
         if ($this->data['only_images'] ?? false) {
             $this->data['slides'] = [];
@@ -64,7 +64,7 @@ class SliderBlock extends BlockComponent
                 ->hidden(fn (Get $get) => ! $get('only_images'))
                 ->image()
                 ->columnSpanFull()
-                ->disk(config('filament-static-pages.disk'))
+                ->disk(config('fsp.disk'))
                 ->directory('sliders')
                 ->maxSize(10 * 1024)
                 ->imageEditor()
@@ -117,7 +117,7 @@ class SliderBlock extends BlockComponent
                     'image' => FileUpload::make('image')
                         ->label('Image')
                         ->image()
-                        ->disk(config('filament-static-pages.disk'))
+                        ->disk(config('fsp.disk'))
                         ->directory('sliders')
                         ->maxSize(10 * 1024)
                         ->imageEditor()

@@ -14,8 +14,6 @@ use Zoker\FilamentStaticPages\Models\Page;
 
 class BreadcrumbsBlock extends BlockComponent
 {
-    public static ?string $label = 'Breadcrumbs';
-
     public static string $viewTemplate = 'components.breadcrumbs';
 
     public static string $viewNamespace = 'fsp';
@@ -36,17 +34,17 @@ class BreadcrumbsBlock extends BlockComponent
     {
         return [
             Repeater::make('breadcrumbs')
-                ->label('Breadcrumbs')
+                ->label(__('fsp::lang.blocks.breadcrumbs'))
                 ->columnSpanFull()
                 ->columns(2)
                 ->default(fn (Page $page) => self::generateDefaultBreadcrumbs($page))
                 ->schema([
                     TextInput::make('title')
-                        ->label('Title')
+                        ->label(__('fsp::lang.blocks.title'))
                         ->required(),
 
                     Builder::make('url')
-                        ->label('URL')
+                        ->label(__('fsp::lang.blocks.url'))
                         ->required()
                         ->reorderable(false)
                         ->maxItems(1)
@@ -87,6 +85,11 @@ class BreadcrumbsBlock extends BlockComponent
         } while ($page = $page->parent);
 
         return array_reverse($breadcrumbs);
+    }
+
+    public static function getLabel(): string
+    {
+        return __('fsp::lang.blocks.breadcrumbs');
     }
 
     public static function maxItem(): ?int

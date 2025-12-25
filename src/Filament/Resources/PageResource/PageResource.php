@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
 use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
+use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentMultisite\Traits\HasMultisiteResource;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Classes\Layout;
@@ -71,7 +72,7 @@ class PageResource extends Resource
                                         $site = \Zoker\FilamentMultisite\Facades\FilamentSiteManager::getCurrentSite();
                                         $baseUrl = $site->hostWithScheme;
                                         $prefix = $site->prefix ? '/' . $site->prefix : '';
-                                        $routePrefix = config('filament-static-pages.route_prefix') ? '/' . config('filament-static-pages.route_prefix') : '';
+                                        $routePrefix = config('fsp.route_prefix') ? '/' . config('fsp.route_prefix') : '';
 
                                         return $baseUrl . $prefix . $routePrefix . '/';
                                     })
@@ -91,7 +92,7 @@ class PageResource extends Resource
                                 Select::make('layout')
                                     ->label('Layout')
                                     ->required()
-                                    ->default(config('filament-static-pages.layout'))
+                                    ->default(config('fsp.layout'))
                                     ->createOptionAction(
                                         fn (Action $action) => $action->modalWidth('3xl'),
                                     )
@@ -140,10 +141,11 @@ class PageResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->url(function (Page $record): string {
+                        /** @var Site $site */
                         $site = $record->site;
                         $baseUrl = $site->hostWithScheme;
                         $prefix = $site->prefix ? '/' . $site->prefix : '';
-                        $routePrefix = config('filament-static-pages.route_prefix') ? '/' . config('filament-static-pages.route_prefix') : '';
+                        $routePrefix = config('fsp.route_prefix') ? '/' . config('fsp.route_prefix') : '';
 
                         return $baseUrl . $prefix . $routePrefix . '/' . $record->url;
                     })

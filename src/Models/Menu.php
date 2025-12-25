@@ -17,9 +17,12 @@ class Menu extends Model
 {
     use HasTranslations;
 
+    /**
+     * @var array<string>
+     */
     public array $translatable = ['items'];
 
-    const string CACHE_KEY = 'filament-static-pages-menu';
+    const string CACHE_KEY = 'fsp-menu';
 
     protected $casts = [
         'items' => 'array',
@@ -47,7 +50,7 @@ class Menu extends Model
 
     public function getTable(): string
     {
-        return config('filament-static-pages.table_prefix') . 'menus';
+        return config('fsp.table_prefix') . 'menus';
     }
 
     public static function getCacheKey(string $code): string

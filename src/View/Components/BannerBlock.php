@@ -22,7 +22,7 @@ class BannerBlock extends BlockComponent
 
     public function render(): View
     {
-        $this->data['storageUrl'] = Storage::disk(config('filament-static-pages.disk'))->url('/');
+        $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');
 
         return parent::render();
     }
@@ -55,7 +55,7 @@ class BannerBlock extends BlockComponent
             'image' => FileUpload::make('image')
                 ->label('Image')
                 ->image()
-                ->disk(config('filament-static-pages.disk'))
+                ->disk(config('fsp.disk'))
                 ->directory('banners')
                 ->maxSize(10 * 1024)
                 ->imageEditor()

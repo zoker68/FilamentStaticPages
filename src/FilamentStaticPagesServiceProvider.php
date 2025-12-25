@@ -10,9 +10,10 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('filament-static-pages')
+        $package->name('fsp')
             ->hasConfigFile()
             ->hasViews('fsp')
+            ->hasTranslations()
             ->hasMigrations([
                 'create_pages_table',
                 'add_parent_id_field_to_pages_table',

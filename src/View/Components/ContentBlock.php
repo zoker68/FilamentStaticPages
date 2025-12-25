@@ -9,8 +9,6 @@ use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class ContentBlock extends BlockComponent
 {
-    public static ?string $label = 'HTML Block';
-
     public static string $viewNamespace = 'fsp';
 
     public static string $viewTemplate = 'components.content';
@@ -22,14 +20,19 @@ class ContentBlock extends BlockComponent
     {
         return [
             RichEditor::make('content')
-                ->label('Content')
+                ->label(__('fsp::lang.blocks.content'))
                 ->columnSpanFull()
                 ->json(false),
 
             TextInput::make('css_class')
-                ->label('CSS Class')
+                ->label(__('fsp::lang.blocks.css_class'))
                 ->columnSpanFull(),
         ];
+    }
+
+    public static function getLabel(): string
+    {
+        return __('fsp::lang.blocks.content');
     }
 
     public static function getBlockHeader(array $state): string // @phpstan-ignore-line
