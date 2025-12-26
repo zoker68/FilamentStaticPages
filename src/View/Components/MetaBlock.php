@@ -11,6 +11,8 @@ use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Illuminate\Contracts\View\View;
+use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
 class MetaBlock extends BlockComponent
@@ -69,11 +71,15 @@ class MetaBlock extends BlockComponent
         $fields = [
             Textarea::make('description')
                 ->label('Description')
-                ->rows(6)
+                ->rows(3)
                 ->live()
                 ->hint(fn ($state) => mb_strlen($state) . ' characters')
                 ->hintColor(fn ($state) => mb_strlen($state) > 160 ? 'danger' : null)
                 ->helperText('Recommended maximum length: 160 characters'),
+
+            TextInput::make('canonical_url')
+                ->label('Canonical URL')
+                ->url(),
         ];
 
         if (class_exists(\Zoker\Shop\Classes\AIQuery::class)) {
@@ -96,5 +102,15 @@ class MetaBlock extends BlockComponent
         }
 
         return $fields;
+    }
+
+    public function render(): View
+    {
+        if (isset($this->data['canonical_url'])) {
+
+            AlternateLinks::setCanonicalUrl($this->data['canonical_url']);
+        }
+
+        return parent::render();
     }
 }
