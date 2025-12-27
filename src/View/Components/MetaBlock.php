@@ -107,7 +107,6 @@ class MetaBlock extends BlockComponent
     public function render(): View
     {
         if (isset($this->data['canonical_url'])) {
-
             AlternateLinks::setCanonicalUrl($this->data['canonical_url']);
         }
 
