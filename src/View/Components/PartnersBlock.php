@@ -5,6 +5,7 @@ namespace Zoker\FilamentStaticPages\View\Components;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
@@ -40,6 +41,13 @@ class PartnersBlock extends BlockComponent
                 ])
                 ->columnSpanFull(),
         ];
+    }
+
+    public function render(): \Illuminate\Contracts\View\View
+    {
+        $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');
+
+        return parent::render();
     }
 
     /** @phpstan-ignore-next-line */

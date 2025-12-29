@@ -7,7 +7,7 @@
             @foreach(array_reverse($attachments) as $attachment)
             <div class="swiper-slide">
                 <div>
-                    <img loading="lazy" src="/storage/{{ ($attachment) }}" alt="brand">
+                    <img loading="lazy" src="{{ $storageUrl . $attachment }}" alt="{{ $title }} ">
                 </div>
             </div>
             @endforeach
