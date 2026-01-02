@@ -12,6 +12,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Contracts\View\View;
+use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
 
@@ -93,7 +94,7 @@ class MetaBlock extends BlockComponent
                             ->action(function (Set $set, Get $get) {
                                 $pageSettings = $get('../../../');
 
-                                $result = (array) json_decode(\Zoker\Shop\Classes\AIQuery::seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
+                                $result = (array) json_decode(\Zoker\Shop\Classes\AIQuery::make(FilamentSiteManager::getCurrentSiteLocale())->seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
 
                                 $set('title', $result['title'] . ' | ' . config('app.name'));
                                 $set('description', $result['description']);
