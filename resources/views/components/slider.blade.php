@@ -6,7 +6,7 @@
             <div class="swiper-wrapper">
                 <!-- Slides -->
                 @foreach($slides as $slide)
-                    <div class="swiper-slide">
+                    <div class="swiper-slide {{ ($slide['dark'] ?? false) ? 'text-secondary' : 'text-white' }}">
                         @if(($slide['link'] ?? false) && !($slide['button'] ?? false))
                             <a href="{{ $slide['link'] }}" target="{{ $slide['target'] }}">
                                 @endif
@@ -18,7 +18,7 @@
                                                 <h2>{{ $slide['heading'] }}</h2>
                                             @endif
                                             @if($slide['text'] ?? false)
-                                                <p>{!! $slide['text'] !!}</p>
+                                                <p class="!text-secondary">{!! $slide['text'] !!}</p>
                                             @endif
                                             @if($slide['button'] ?? false)
                                                 <div class="mt-[30px] md:mt-[40px]">

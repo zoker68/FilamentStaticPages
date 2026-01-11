@@ -94,8 +94,7 @@ class SliderBlock extends BlockComponent
 
                     'link' => TextInput::make('link')
                         ->label('URL')
-                        ->maxValue(255)
-                        ->url(),
+                        ->maxValue(255),
 
                     'target' => Select::make('target')
                         ->label('Link Target')
@@ -122,6 +121,9 @@ class SliderBlock extends BlockComponent
                         ->maxSize(10 * 1024)
                         ->imageEditor()
                         ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
+
+                    'dark' => Toggle::make('dark')
+                        ->label('Enable dark text mode'),
                 ]),
         ];
     }
