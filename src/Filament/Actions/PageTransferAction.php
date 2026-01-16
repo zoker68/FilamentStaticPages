@@ -6,6 +6,7 @@ use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentStaticPages\Models\Content;
@@ -78,7 +79,7 @@ class PageTransferAction extends AbstractTransferAction
     protected function getRecordIdentifier(Content|Page $record): string
     {
         /** @var Page $record */
-        return $record->url;
+        return $record->url ?? Str::slug($record->name);
     }
 
     /**
