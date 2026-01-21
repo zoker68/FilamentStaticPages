@@ -2,6 +2,7 @@
 
 namespace Zoker\FilamentStaticPages\Observers;
 
+use Illuminate\Support\Facades\Artisan;
 use Zoker\FilamentStaticPages\Models\Page;
 
 class PageObserver
@@ -20,5 +21,7 @@ class PageObserver
     {
         cache()->forget(Page::CACHE_KEY_ROUTES);
         cache()->forget(Page::CACHE_KEY_ALLOWED_URLS);
+
+        Artisan::call('route:clear');
     }
 }
