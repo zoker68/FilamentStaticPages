@@ -50,6 +50,8 @@ class MenuResource extends Resource
                 Repeater::make('items')
                     ->columnSpanFull()
                     ->label('Menu items')
+                    ->collapsible()
+                    ->collapsed()
                     ->schema(self::getItemShema()),
             ]);
     }
