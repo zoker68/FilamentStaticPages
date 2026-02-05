@@ -59,9 +59,9 @@ class Page extends Model
     }
 
     /** @return array<string> */
-    public static function getAllRoutes(?int $siteId = null): array
+    public static function getAllRoutes(): array
     {
-        if (! Schema::hasTable((new self)->getTable())) {
+        if (! cache()->has(self::CACHE_KEY_ROUTES) && ! Schema::hasTable((new self)->getTable())) {
             return [];
         }
 
@@ -74,7 +74,7 @@ class Page extends Model
     /** @return array<string> */
     public static function getAllowedUrls(): array
     {
-        if (! Schema::hasTable((new self)->getTable())) {
+        if (! cache()->has(self::CACHE_KEY_ALLOWED_URLS) && ! Schema::hasTable((new self)->getTable())) {
             return [];
         }
 
