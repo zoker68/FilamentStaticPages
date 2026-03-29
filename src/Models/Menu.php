@@ -39,13 +39,17 @@ class Menu extends Model
 
     public static function getMenu(string $code): self
     {
-        return cache()->remember(
-            self::getCacheKey($code),
-            now()->addMinutes(30),
-            function () use ($code) {
-                return self::where('code', $code)->first();
-            }
-        ) ?? new self;
+        if (cache()->has(self::getCacheKey($code))) {
+
+            return self::hydrate([cache()->get(self::getCacheKey($code))])->first();
+        }
+
+        $menu = self::where('code', $code)->first();
+        if ($menu) {
+            cache()->put(self::getCacheKey($code), $menu->getAttributes(), now()->addHour());
+        }
+
+        return $menu ?? new self;
     }
 
     public function getTable(): string

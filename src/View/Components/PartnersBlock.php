@@ -5,6 +5,7 @@ namespace Zoker\FilamentStaticPages\View\Components;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
@@ -43,7 +44,7 @@ class PartnersBlock extends BlockComponent
         ];
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): View
     {
         $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');
 

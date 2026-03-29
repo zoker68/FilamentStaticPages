@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
+use Zoker\Shop\Classes\AIQuery;
 
 class MetaBlock extends BlockComponent
 {
@@ -83,7 +84,7 @@ class MetaBlock extends BlockComponent
                 ->url(),
         ];
 
-        if (class_exists(\Zoker\Shop\Classes\AIQuery::class)) {
+        if (class_exists(AIQuery::class)) {
             $fields[] =
                 TextEntry::make('generateAI')
                     ->label('Generate SEO with AI')
@@ -94,7 +95,7 @@ class MetaBlock extends BlockComponent
                             ->action(function (Set $set, Get $get) {
                                 $pageSettings = $get('../../../');
 
-                                $result = (array) json_decode(\Zoker\Shop\Classes\AIQuery::make(FilamentSiteManager::getCurrentSiteLocale())->seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
+                                $result = (array) json_decode(AIQuery::make(FilamentSiteManager::getCurrentSiteLocale())->seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
 
                                 $set('title', $result['title'] . ' | ' . config('app.name'));
                                 $set('description', $result['description']);

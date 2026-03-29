@@ -1,5 +1,8 @@
 <?php
 
+use Zoker\FilamentMultisite\Http\Middleware\MultisiteMiddleware;
+use Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware;
+
 /**
  * Configuration file for the Filament Static Pages package.
  */
@@ -25,8 +28,8 @@ return [
      */
     'middlewares' => [
         'web',
-        \Zoker\FilamentMultisite\Http\Middleware\MultisiteMiddleware::class,
-        class_exists(\Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class) ? \Zoker\Shop\Http\Middleware\MaintenanceModeMiddleware::class : null, // TODO: Delete when Shop is installed
+        MultisiteMiddleware::class,
+        class_exists(MaintenanceModeMiddleware::class) ? MaintenanceModeMiddleware::class : null, // TODO: Delete when Shop is installed
     ],
 
     'disk' => env('FSP_DISK', 'public'),

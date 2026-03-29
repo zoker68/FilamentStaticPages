@@ -69,7 +69,7 @@ class PageResource extends Resource
                                 TextInput::make('url')
                                     ->label('URL')
                                     ->prefix(function (): string {
-                                        $site = \Zoker\FilamentMultisite\Facades\FilamentSiteManager::getCurrentSite();
+                                        $site = FilamentSiteManager::getCurrentSite();
                                         $baseUrl = $site->hostWithScheme;
                                         $prefix = $site->prefix ? '/' . $site->prefix : '';
                                         $routePrefix = config('fsp.route_prefix') ? '/' . config('fsp.route_prefix') : '';
