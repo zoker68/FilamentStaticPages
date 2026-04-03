@@ -58,6 +58,7 @@ return [
         'blocks' => 'Blok',
         'add_block' => 'Dodaj blok',
         'text' => 'Besedilo',
+        'image_type' => 'Tip slike',
         'image' => 'Slika',
         'link_text' => 'Besedilo povezave',
         'link_target' => 'Cilj povezave',
@@ -83,6 +84,11 @@ return [
         'image_with_text' => 'Slika z besedilom',
         'small_block_with_icon' => 'Majhen blok z ikono',
         'wide_block_with_image' => 'Širok blok s sliko',
+        'icon_name' => 'Ime ikone',
+        'image_types' => [
+            'image' => 'Slika',
+            'icon' => 'Ikona',
+        ],
     ],
     'system' => [
         'page' => 'Stran',

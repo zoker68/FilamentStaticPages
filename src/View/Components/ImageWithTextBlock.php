@@ -8,6 +8,8 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -69,14 +71,32 @@ class ImageWithTextBlock extends BlockComponent
                         ->columnSpan(2)
                         ->json(false),
 
-                    FileUpload::make('image')
-                        ->label(__('fsp::lang.blocks.image'))
-                        ->image()
-                        ->disk(config('fsp.disk'))
-                        ->directory('blocks-images')
-                        ->maxSize(10 * 1024)
-                        ->imageEditor()
-                        ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1']),
+                    Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Select::make('image_type')
+                                ->label(__('fsp::lang.blocks.image_type'))
+                                ->options([
+                                    'image' => __('fsp::lang.blocks.image_types.image'),
+                                    'icon' => __('fsp::lang.blocks.image_types.icon'),
+                                ])
+                                ->live()
+                                ->default('image'),
+
+                            FileUpload::make('image')
+                                ->label(__('fsp::lang.blocks.image'))
+                                ->image()
+                                ->disk(config('fsp.disk'))
+                                ->directory('blocks-images')
+                                ->maxSize(10 * 1024)
+                                ->imageEditor()
+                                ->imageEditorAspectRatioOptions([null, '4:3', '16:9', '1:1', '2:1', '3:1', '4:1'])
+                                ->visible(fn (Get $get): bool => $get('image_type') === 'image'),
+
+                            TextInput::make('icon')
+                                ->label(__('fsp::lang.blocks.icon_name'))
+                                ->visible(fn (Get $get): bool => $get('image_type') === 'icon'),
+                        ]),
 
                     TextInput::make('link.text')
                         ->label(__('fsp::lang.blocks.link_text'))

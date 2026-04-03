@@ -5,11 +5,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-10 flex-wrap justify-between">
                     @foreach($blocks as $block)
                             <div class="group min-h-[90px] h-full w-full px-5 lg:px-10 py-6 border border-[#EDECEC] hover:shadow-lg rounded-md flex flex-row gap-6 lg:gap-8 items-center justify-center transition-all duration-300">
-                                @if ($block['image'])
+                                @if ($block['image_type'] === 'image' && $block['image'])
                                     <div class="flex-shrink-0">
                                         <img src="{{ $storageUrl . $block['image'] }}"
                                              class="w-[40px] md:w-[50px] max-h-11 group-hover:scale-110 transition-all duration-300"
                                              alt="icon">
+                                    </div>
+                                @elseif ($block['image_type'] === 'icon' && $block['icon'])
+                                    <div class="flex-shrink-0">
+                                        <i class="{{ $block['icon'] }}" />
                                     </div>
                                 @endif
                                 <div class="flex-1">

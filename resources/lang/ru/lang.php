@@ -58,6 +58,7 @@ return [
         'blocks' => 'Блоки',
         'add_block' => 'Добавить блок',
         'text' => 'Текст',
+        'image_type' => 'Тип картинки',
         'image' => 'Изображение',
         'link_text' => 'Текст ссылки',
         'link_target' => 'Цель ссылки',
@@ -83,6 +84,11 @@ return [
         'image_with_text' => 'Изображение с текстом',
         'small_block_with_icon' => 'Маленький блок с иконкой',
         'wide_block_with_image' => 'Широкий блок с изображением',
+        'icon_name' => 'Название иконки',
+        'image_types' => [
+            'image' => 'Картинка',
+            'icon' => 'Иконка',
+        ],
     ],
     'system' => [
         'page' => 'Страница',

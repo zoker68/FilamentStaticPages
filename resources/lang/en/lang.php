@@ -58,6 +58,7 @@ return [
         'blocks' => 'Blocks',
         'add_block' => 'Add block',
         'text' => 'Text',
+        'image_type' => 'Image type',
         'image' => 'Image',
         'link_text' => 'Link Text',
         'link_target' => 'Link Target',
@@ -83,6 +84,11 @@ return [
         'image_with_text' => 'Image with text',
         'small_block_with_icon' => 'Small block with icon',
         'wide_block_with_image' => 'Wide block with image',
+        'icon_name' => 'Icon name',
+        'image_types' => [
+            'image' => 'Image',
+            'icon' => 'Icon',
+        ],
     ],
     'system' => [
         'page' => 'Page',
