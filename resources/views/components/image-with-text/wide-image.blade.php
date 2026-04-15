@@ -9,11 +9,13 @@
                     <div class="text-[#666666] leading-tight mb-6">{!! $slide['text'] !!}</div>
                     <a href="{{ $slide['link']['url'] }}" target="{{ $slide['link']['target'] }}"  class="btn btn-primary !py-3">{{ $slide['link']['text'] }}</a>
                 </div>
+                @if(isset($slide['image']))
                 <div class="flex justify-center">
                     <img src="{{ $storageUrl.$slide['image'] }}"
                          class="w-[200px] h-[150px] lg:h-[180px] object-contain flex-shrink-0 hover:scale-105 transition-all duration-300"
                          alt="{{ $slide['heading'] }}">
                 </div>
+                @endif
             </div>
         </div>
         @endforeach
