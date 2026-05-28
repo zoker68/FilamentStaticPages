@@ -83,3 +83,17 @@ class TextBlock extends \Zoker\FilamentStaticPages\Classes\BlockComponent
 ```bladehtml
 @fspContent('content-code')
 ```
+
+## With context
+
+You can pass additional context to blocks:
+
+```bladehtml
+@fspContent('content-code', ['product' => $product])
+```
+
+Access context in block component:
+
+```bladehtml
+{{ $context['product']->name }}
+```
