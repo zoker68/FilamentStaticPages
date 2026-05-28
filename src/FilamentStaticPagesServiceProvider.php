@@ -24,10 +24,12 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
 
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');
 
-        Blade::directive('fspContent', function ($code) {
-            $code = trim($code, '\'"');
+        Blade::directive('fspContent', function ($expression) {
+            $parts = array_map('trim', explode(',', $expression, 2));
+            $code = trim($parts[0], '\'"');
+            $context = $parts[1] ?? '[]';
 
-            return "<?php echo \Blade::render('<x-fsp::render-content-directive code=\"$code\" />'); ?>";
+            return "<?php echo \Blade::render('<x-fsp::render-content-directive code=\"$code\" :context=\"\$context\" />', ['context' => $context]); ?>";
         });
 
         Blade::directive('fspMenu', function ($code) {

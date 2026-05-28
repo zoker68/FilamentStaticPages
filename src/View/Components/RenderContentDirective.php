@@ -12,8 +12,11 @@ class RenderContentDirective extends Component
     /** @var array<array-key, array<string, mixed>> */
     public array $blocks = [];
 
-    public function __construct(string $code, public Page $page)
-    {
+    public function __construct(
+        string $code,
+        public Page $page,
+        public readonly array $context = [],
+    ) {
         $this->blocks = Content::where('code', $code)->value('content') ?? [];
     }
 
