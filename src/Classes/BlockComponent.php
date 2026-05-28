@@ -20,8 +20,13 @@ abstract class BlockComponent extends Component
 
     /**
      * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
      */
-    public function __construct(public array $data, public ?Page $page = null) {}
+    public function __construct(
+        public array $data,
+        public ?Page $page = null,
+        public readonly array $context = [],
+    ) {}
 
     /**
      * @return array<array-key, Block>
@@ -30,7 +35,10 @@ abstract class BlockComponent extends Component
 
     public function render(): View
     {
-        return view(static::getTemplate(), $this->data); // @phpstan-ignore-line
+        return view(static::getTemplate(), [
+            ...$this->data,
+            'context' => $this->context,
+        ]); // @phpstan-ignore-line
     }
 
     public static function getLabel(): string
