@@ -18,6 +18,13 @@ class QuestionAnswerBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-question-mark-circle';
 
+    /** @var array<int, string> */
+    public static array $translatable = [
+        'categories.*.title',
+        'categories.*.questions.*.question',
+        'categories.*.questions.*.answer',
+    ];
+
     /** @return array<array-key, Component> */
     public static function getSchema(): array
     {

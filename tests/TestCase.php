@@ -6,7 +6,9 @@ namespace Zoker\FilamentStaticPages\Tests;
 
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Ai\AiServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\Translatable\TranslatableServiceProvider;
 use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentMultisite\Providers\FilamentMultisiteRouteServiceProvider;
 use Zoker\FilamentMultisite\Providers\FilamentMultisiteServiceProvider;
@@ -60,7 +62,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            \Spatie\Translatable\TranslatableServiceProvider::class,
+            TranslatableServiceProvider::class,
+            AiServiceProvider::class,
             FilamentMultisiteServiceProvider::class,
             FilamentMultisiteRouteServiceProvider::class,
             FilamentStaticPagesServiceProvider::class,

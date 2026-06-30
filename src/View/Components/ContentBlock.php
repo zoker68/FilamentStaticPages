@@ -15,6 +15,9 @@ class ContentBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-document-text';
 
+    /** @var array<int, string> */
+    public static array $translatable = ['content'];
+
     /** @return array<array-key, Component> */
     public static function getSchema(): array
     {

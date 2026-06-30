@@ -33,4 +33,10 @@ One provider: **`FilamentStaticPagesServiceProvider`** (Spatie `PackageServicePr
 
 Page content is **block-based**: blocks are registered in `BlocksComponentRegistry` and rendered through the `*Block` Blade components / `@fspContent` directive. To add a content block, register it and add its component. Pages/content are per-site via `HasMultisite`, and can be transferred across sites with the transfer actions.
 
+## AI (translation & SEO)
+
+SEO generation (Meta block) and translation of copied page blocks use the first‑party `laravel/ai` SDK. Pieces: agents in `src/Ai/Agents/` (`TranslateAgent`, `SeoAgent`); `Services/Translator` (SDK adapter); `Services/BlockContentTranslator` walks blocks using each block's static **`$translatable`** dot‑paths (`*` = every repeater item) — structure/non‑text fields are never touched; `Jobs/TranslatePageBlocksJob` queues the work (translates only the copied tail, append‑safe).
+
+Gated by `config('fsp.ai.enabled')`; provider/model from `fsp.ai.provider|model`; `fsp.ai.base_locale` is the single main language content is only translated *out* of. The **API key is `laravel/ai`'s own** (`OPENAI_API_KEY`, …) — never set in this package. When `zoker/shop` is installed it overrides `fsp.ai.*` from `shop.ai.*` at boot (single config source). To make a new block's text translatable, add `public static array $translatable = [...]` to it.
+
 Changes here are real package changes — they must land in this package's upstream repo.

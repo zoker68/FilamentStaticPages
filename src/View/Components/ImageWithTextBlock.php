@@ -21,6 +21,13 @@ class ImageWithTextBlock extends BlockComponent
 
     public static string $viewNamespace = 'fsp';
 
+    /** @var array<int, string> */
+    public static array $translatable = [
+        'blocks.*.heading',
+        'blocks.*.text',
+        'blocks.*.link.text',
+    ];
+
     public static string $icon = 'heroicon-o-identification';
 
     public function render(): View

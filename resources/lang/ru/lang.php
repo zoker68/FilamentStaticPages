@@ -27,6 +27,8 @@ return [
         'import_mode' => 'Режим импорта',
         'replace_existing_blocks' => 'Заменить существующие блоки',
         'append_to_existing_blocks' => 'Добавить к существующим блокам',
+        'translate_content' => 'Перевести контент на целевой язык',
+        'translate_content_hint' => 'Перевести скопированные текстовые блоки на язык целевого сайта через AI (выполняется в фоне).',
     ],
     'messages' => [
         'error' => 'Ошибка',
@@ -45,6 +47,7 @@ return [
         'target_content_not_found' => 'Целевой контент не найден',
         'cannot_copy_to_same_content' => 'Нельзя копировать на тот же контент и язык',
         'blocks_copied_to_content' => 'Блоки скопированы в ":code" (:locale)',
+        'translation_queued' => 'Перевод на :locale поставлен в очередь и появится через некоторое время.',
     ],
     'blocks' => [
         'heading' => 'Заголовок',

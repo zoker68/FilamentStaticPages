@@ -27,6 +27,8 @@ return [
         'import_mode' => 'Način uvoza',
         'replace_existing_blocks' => 'Zamenjaj obstoječe bloke',
         'append_to_existing_blocks' => 'Dodaj k obstoječim blokom',
+        'translate_content' => 'Prevedi vsebino v ciljni jezik',
+        'translate_content_hint' => 'Prevedi kopirane besedilne bloke v jezik ciljnega spletnega mesta z AI (poteka v ozadju).',
     ],
     'messages' => [
         'error' => 'Napaka',
@@ -45,6 +47,7 @@ return [
         'target_content_not_found' => 'Ciljne vsebine ni mogoče najti',
         'cannot_copy_to_same_content' => 'Ni mogoče kopirati na isto vsebino in jezik',
         'blocks_copied_to_content' => 'Blokov je bilo kopiranih v ":code" (:locale)',
+        'translation_queued' => 'Prevod v :locale je v čakalni vrsti in se bo kmalu prikazal.',
     ],
     'blocks' => [
         'heading' => 'Naslov',

@@ -20,6 +20,13 @@ class SliderBlock extends BlockComponent
 
     public static string $viewTemplate = 'components.slider';
 
+    /** @var array<int, string> */
+    public static array $translatable = [
+        'slides.*.heading',
+        'slides.*.button',
+        'slides.*.text',
+    ];
+
     public static string $viewNamespace = 'fsp';
 
     public static string $icon = 'heroicon-c-chevron-double-right';

@@ -14,12 +14,15 @@ use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Contracts\View\View;
 use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
+use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
-use Zoker\Shop\Classes\AIQuery;
 
 class MetaBlock extends BlockComponent
 {
     public static ?string $label = 'Meta Data';
+
+    /** @var array<int, string> */
+    public static array $translatable = ['title', 'description'];
 
     public static string $viewTemplate = 'components.meta-data';
 
@@ -84,7 +87,7 @@ class MetaBlock extends BlockComponent
                 ->url(),
         ];
 
-        if (class_exists(AIQuery::class)) {
+        if (config('fsp.ai.enabled')) {
             $fields[] =
                 TextEntry::make('generateAI')
                     ->label('Generate SEO with AI')
@@ -95,10 +98,14 @@ class MetaBlock extends BlockComponent
                             ->action(function (Set $set, Get $get) {
                                 $pageSettings = $get('../../../');
 
-                                $result = (array) json_decode(AIQuery::make(FilamentSiteManager::getCurrentSiteLocale())->seoTitleDescriptionForMetaPage($pageSettings)); // @phpstan-ignore-line
+                                $response = (new SeoAgent(FilamentSiteManager::getCurrentSiteLocale()))->prompt(
+                                    json_encode($pageSettings, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}',
+                                    provider: config('fsp.ai.provider'),
+                                    model: config('fsp.ai.model'),
+                                );
 
-                                $set('title', $result['title'] . ' | ' . config('app.name'));
-                                $set('description', $result['description']);
+                                $set('title', (string) $response['title'] . ' | ' . config('app.name'));
+                                $set('description', (string) $response['description']);
                             }),
                     );
         }

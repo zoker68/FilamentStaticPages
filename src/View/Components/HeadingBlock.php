@@ -16,6 +16,9 @@ class HeadingBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-exclamation-triangle';
 
+    /** @var array<int, string> */
+    public static array $translatable = ['heading'];
+
     /** @return array<array-key, Component> */
     public static function getSchema(): array
     {

@@ -20,6 +20,9 @@ class BreadcrumbsBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-link';
 
+    /** @var array<int, string> */
+    public static array $translatable = ['breadcrumbs.*.title'];
+
     public MenuModel $menu;
 
     public function render(): View

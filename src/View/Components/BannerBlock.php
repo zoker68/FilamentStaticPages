@@ -20,6 +20,9 @@ class BannerBlock extends BlockComponent
 
     public static string $icon = 'heroicon-o-megaphone';
 
+    /** @var array<int, string> */
+    public static array $translatable = ['alt'];
+
     public function render(): View
     {
         $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');

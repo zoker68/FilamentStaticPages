@@ -124,6 +124,15 @@ abstract class AbstractTransferAction extends Action
             ->send();
     }
 
+    protected function showInfoNotification(string $message): void
+    {
+        Notification::make()
+            ->title(__('fsp::lang.messages.success'))
+            ->body($message)
+            ->info()
+            ->send();
+    }
+
     protected function getCurrentLocale(): string
     {
         return FilamentSiteManager::getCurrentSiteLocale();

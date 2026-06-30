@@ -7,6 +7,8 @@ namespace Zoker\FilamentStaticPages\Tests\Unit\Classes;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
 use Zoker\FilamentStaticPages\Tests\TestCase;
 use Zoker\FilamentStaticPages\View\Components\ContentBlock;
+use Zoker\FilamentStaticPages\View\Components\HeadingBlock;
+use Zoker\FilamentStaticPages\View\Components\QuestionAnswerBlock;
 
 class BlocksComponentRegistryTest extends TestCase
 {
@@ -62,5 +64,28 @@ class BlocksComponentRegistryTest extends TestCase
         BlocksComponentRegistry::register(ContentBlock::class);
 
         $this->assertTrue(BlocksComponentRegistry::has('ContentBlock'));
+    }
+
+    public function test_every_registered_block_declares_translatable_fields(): void
+    {
+        // Guards against a new block silently dropping out of translation.
+        foreach (BlocksComponentRegistry::getComponents() as $name => $class) {
+            $this->assertTrue(
+                property_exists($class, 'translatable'),
+                "Block [{$name}] ({$class}) must declare a static \$translatable property."
+            );
+            $this->assertIsArray($class::$translatable, "Block [{$name}] \$translatable must be an array.");
+        }
+    }
+
+    public function test_built_in_blocks_translatable_declarations(): void
+    {
+        $this->assertSame(['heading'], HeadingBlock::$translatable);
+        $this->assertSame(['content'], ContentBlock::$translatable);
+        $this->assertSame([
+            'categories.*.title',
+            'categories.*.questions.*.question',
+            'categories.*.questions.*.answer',
+        ], QuestionAnswerBlock::$translatable);
     }
 }

@@ -19,6 +19,16 @@ abstract class BlockComponent extends Component
     public static ?string $label = null;
 
     /**
+     * Dot-paths (relative to the block's `data`) of fields that hold
+     * human-readable text and should be translated when a page is copied to
+     * another locale. Use "*" to match every item of a repeater, e.g.
+     * `categories.*.questions.*.answer`. Non-text fields are simply omitted.
+     *
+     * @var array<int, string>
+     */
+    public static array $translatable = [];
+
+    /**
      * @param  array<string, mixed>  $data
      * @param  array<string, mixed>  $context
      */
