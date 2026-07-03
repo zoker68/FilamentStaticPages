@@ -23,6 +23,9 @@ class BannerBlock extends BlockComponent
     /** @var array<int, string> */
     public static array $translatable = ['alt'];
 
+    /** @var array<int, string> */
+    public static array $links = ['link'];
+
     public function render(): View
     {
         $this->data['storageUrl'] = Storage::disk(config('fsp.disk'))->url('/');

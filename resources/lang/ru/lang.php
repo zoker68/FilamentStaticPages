@@ -48,6 +48,7 @@ return [
         'cannot_copy_to_same_content' => 'Нельзя копировать на тот же контент и язык',
         'blocks_copied_to_content' => 'Блоки скопированы в ":code" (:locale)',
         'translation_queued' => 'Перевод на :locale поставлен в очередь и появится через некоторое время.',
+        'translation_same_locale' => 'Целевой сайт использует тот же язык, что и сайт по умолчанию — переводить нечего.',
     ],
     'blocks' => [
         'heading' => 'Заголовок',

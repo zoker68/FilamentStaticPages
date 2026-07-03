@@ -48,6 +48,7 @@ return [
         'cannot_copy_to_same_content' => 'Ni mogoče kopirati na isto vsebino in jezik',
         'blocks_copied_to_content' => 'Blokov je bilo kopiranih v ":code" (:locale)',
         'translation_queued' => 'Prevod v :locale je v čakalni vrsti in se bo kmalu prikazal.',
+        'translation_same_locale' => 'Ciljna stran uporablja isti jezik kot privzeta stran — ni kaj prevajati.',
     ],
     'blocks' => [
         'heading' => 'Naslov',

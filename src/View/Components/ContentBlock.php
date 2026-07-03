@@ -18,6 +18,9 @@ class ContentBlock extends BlockComponent
     /** @var array<int, string> */
     public static array $translatable = ['content'];
 
+    /** @var array<int, string> */
+    public static array $htmlLinks = ['content'];
+
     /** @return array<array-key, Component> */
     public static function getSchema(): array
     {

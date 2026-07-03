@@ -34,6 +34,7 @@ class TestCase extends Orchestra
         $multisiteMigrations = __DIR__ . '/../../FilamentMultisite/database/migrations';
         $this->loadMigrationsFrom($multisiteMigrations . '/create_sites_table.php');
         $this->loadMigrationsFrom($multisiteMigrations . '/add_label_to_sites_table.php');
+        $this->loadMigrationsFrom($multisiteMigrations . '/add_is_default_to_sites_table.php');
 
         $migrations = __DIR__ . '/../database/migrations';
         foreach ([

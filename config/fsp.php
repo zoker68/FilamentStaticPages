@@ -35,6 +35,19 @@ return [
     'disk' => env('FSP_DISK', 'public'),
 
     /**
+     * Cross-site transfer behavior.
+     */
+    'transfer' => [
+        // Rewrite internal links in copied blocks to the target site (host + locale prefix).
+        // Disable to keep block links exactly as authored on the source site.
+        'rewrite_links' => env('FSP_TRANSFER_REWRITE_LINKS', true),
+
+        // Leading path segments that are NOT locale-scoped page routes (e.g. the public
+        // storage dir) and must be left untouched by link rewriting.
+        'skip_path_prefixes' => ['storage'],
+    ],
+
+    /**
      * AI features (block translation on copy, SEO generation in the Meta block).
      * Backed by the laravel/ai SDK; the provider/model are resolved from here so
      * the host app can switch provider without touching package code.
@@ -50,8 +63,5 @@ return [
         // Short description of the site's topic/domain, injected into AI prompts so
         // translations pick the correct domain meaning of ambiguous terms.
         'context' => env('FSP_AI_CONTEXT'),
-
-        // The single main language. Content is only ever translated OUT of it.
-        'base_locale' => env('FSP_AI_BASE_LOCALE', 'en'),
     ],
 ];

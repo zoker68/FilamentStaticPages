@@ -16,7 +16,7 @@ class TranslatePageBlocksJobTest extends TestCase
     {
         parent::setUp();
 
-        config(['fsp.ai.enabled' => true, 'fsp.ai.base_locale' => 'en']);
+        config(['fsp.ai.enabled' => true]);
 
         // Stub translator: prefixes each value with the target locale.
         $this->app->instance(Translator::class, new class extends Translator
@@ -78,12 +78,25 @@ class TranslatePageBlocksJobTest extends TestCase
             ->and($content[2]['data']['heading'])->toBe('de:Copied 2');
     }
 
-    public function test_it_skips_when_source_is_not_the_main_language(): void
+    public function test_it_translates_out_of_a_non_base_locale(): void
+    {
+        // Direction is decided at dispatch, so the job translates any source→target
+        // pair. Regression: the removed base_locale gate would have skipped a
+        // source locale other than the (old) main language.
+        $page = $this->makePage([['type' => 'Heading', 'data' => ['heading' => 'A']]]);
+
+        (new TranslatePageBlocksJob($page->id, 'ru', 'de', 0))->handle();
+
+        expect($page->fresh()->content[0]['data']['heading'])->toBe('de:A');
+    }
+
+    public function test_it_skips_when_source_and_target_locales_match(): void
     {
         $page = $this->makePage([['type' => 'Heading', 'data' => ['heading' => 'A']]]);
 
-        // Source 'sl' is not the main language -> no translation.
-        (new TranslatePageBlocksJob($page->id, 'sl', 'de', 0))->handle();
+        // Same source/target locale -> nothing to translate. (Direction — only OUT of
+        // the default site — is now enforced at dispatch time, not in the job.)
+        (new TranslatePageBlocksJob($page->id, 'en', 'en', 0))->handle();
 
         expect($page->fresh()->content[0]['data']['heading'])->toBe('A');
     }

@@ -36,12 +36,9 @@ class TranslatePageBlocksJob implements ShouldQueue
 
     public function handle(): void
     {
+        // Direction (only OUT of the default site) is enforced at dispatch time;
+        // here we just guard the no-op and disabled cases.
         if ($this->sourceLocale === $this->targetLocale || ! config('fsp.ai.enabled')) {
-            return;
-        }
-
-        // Translations only flow out of the single main language.
-        if ($this->sourceLocale !== config('fsp.ai.base_locale')) {
             return;
         }
 

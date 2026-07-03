@@ -6,6 +6,7 @@ namespace Zoker\FilamentStaticPages\Services;
 
 use Illuminate\Support\Arr;
 use Zoker\FilamentStaticPages\Classes\BlocksComponentRegistry;
+use Zoker\FilamentStaticPages\Support\BlockDataPaths;
 
 /**
  * Translates the human-readable text inside a blocks array from one locale to
@@ -48,7 +49,7 @@ class BlockContentTranslator
             }
 
             foreach ($this->translatableKeysFor($type) as $keyPath) {
-                foreach ($this->expandPath($data, explode('.', $keyPath)) as $concretePath) {
+                foreach (BlockDataPaths::expand($data, $keyPath) as $concretePath) {
                     $value = Arr::get($data, $concretePath);
 
                     if (! $this->isTranslatableValue($value)) {
@@ -100,54 +101,6 @@ class BlockContentTranslator
 
         /** @var array<int, string> */
         return $class::$translatable;
-    }
-
-    /**
-     * Expand a dot path that may contain "*" wildcards into concrete dot paths
-     * that actually exist in $data.
-     *
-     * @param  array<int, string>  $segments
-     * @return array<int, string>
-     */
-    private function expandPath(mixed $data, array $segments): array
-    {
-        if ($segments === []) {
-            return [''];
-        }
-
-        $segment = $segments[0];
-        $rest = array_slice($segments, 1);
-
-        if ($segment === '*') {
-            if (! is_array($data)) {
-                return [];
-            }
-
-            $paths = [];
-            foreach ($data as $index => $item) {
-                foreach ($this->expandPath($item, $rest) as $sub) {
-                    $paths[] = $this->joinPath((string) $index, $sub);
-                }
-            }
-
-            return $paths;
-        }
-
-        if (! is_array($data) || ! array_key_exists($segment, $data)) {
-            return [];
-        }
-
-        $paths = [];
-        foreach ($this->expandPath($data[$segment], $rest) as $sub) {
-            $paths[] = $this->joinPath($segment, $sub);
-        }
-
-        return $paths;
-    }
-
-    private function joinPath(string $head, string $tail): string
-    {
-        return $tail === '' ? $head : $head . '.' . $tail;
     }
 
     private function isTranslatableValue(mixed $value): bool

@@ -48,6 +48,7 @@ return [
         'cannot_copy_to_same_content' => 'Cannot copy to the same content and language',
         'blocks_copied_to_content' => 'Blocks have been copied to ":code" (:locale)',
         'translation_queued' => 'Translation to :locale has been queued and will appear shortly.',
+        'translation_same_locale' => 'The target site uses the same language as the default site — nothing to translate.',
     ],
     'blocks' => [
         'heading' => 'Heading',

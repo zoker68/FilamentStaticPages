@@ -12,6 +12,7 @@ use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentStaticPages\Jobs\TranslatePageBlocksJob;
 use Zoker\FilamentStaticPages\Models\Content;
 use Zoker\FilamentStaticPages\Models\Page;
+use Zoker\FilamentStaticPages\Services\BlockLinkRewriter;
 use Zoker\FilamentStaticPages\Services\BlocksExportImportService;
 
 class PageTransferAction extends AbstractTransferAction
@@ -143,6 +144,8 @@ class PageTransferAction extends AbstractTransferAction
 
         $page = $service->importAsPage($exportData, $targetSite, $publish);
 
+        $this->rewriteCopiedLinks($page, $record->site, 0);
+
         $this->showSuccessNotification(
             __('fsp::lang.messages.page_copied_to_site', [
                 'name' => $page->name,
@@ -186,7 +189,16 @@ class PageTransferAction extends AbstractTransferAction
         // translated — never the target's existing, already-localised blocks.
         $fromIndex = $replaceContent ? 0 : count($targetPage->content ?? []);
 
-        $service->copyBlocksToExisting($record, $targetPage, $replaceContent, $publish);
+        $service->copyBlocksToExisting($record, $targetPage, $replaceContent);
+
+        // The 'Publish after copy' toggle must be applied explicitly here — the
+        // block-copy service only touches content, never the published flag.
+        if ($publish && ! $targetPage->published) {
+            $targetPage->published = true;
+            $targetPage->save();
+        }
+
+        $this->rewriteCopiedLinks($targetPage, $record->site, $fromIndex);
 
         $this->showSuccessNotification(
             __('fsp::lang.messages.blocks_copied_to_page', [
@@ -241,7 +253,8 @@ class PageTransferAction extends AbstractTransferAction
 
     /**
      * Translation is offered only when an AI translator is available and the
-     * source page is in the single main language (translations flow out of it).
+     * source page lives on the default (original) site — translations flow out
+     * of that site, not out of a locale (a locale may repeat across sites).
      */
     protected function canTranslate(): bool
     {
@@ -251,10 +264,8 @@ class PageTransferAction extends AbstractTransferAction
 
         /** @var ?Page $record */
         $record = $this->getRecord();
-        $sourceLocale = $this->localeForSiteId($record?->site_id);
 
-        return $sourceLocale !== null
-            && $sourceLocale === config('fsp.ai.base_locale');
+        return $record?->site?->is_default === true;
     }
 
     protected function localeForSiteId(?int $siteId): ?string
@@ -263,8 +274,23 @@ class PageTransferAction extends AbstractTransferAction
     }
 
     /**
+     * Rewrite internal links in the just-copied blocks so they point at the
+     * target site (host + locale prefix). Only the tail from $fromIndex is
+     * touched, keeping an existing target page's own blocks intact on append.
+     */
+    protected function rewriteCopiedLinks(Page $target, ?Site $sourceSite, int $fromIndex): void
+    {
+        if (! config('fsp.transfer.rewrite_links', true) || $sourceSite === null) {
+            return;
+        }
+
+        app(BlockLinkRewriter::class)->rewritePage($target, $sourceSite, $fromIndex);
+    }
+
+    /**
      * Queue translation of the just-copied block tail into the target locale,
-     * but only out of the main language and into a different one.
+     * but only when copying OUT of the default (original) site and into a
+     * different locale.
      */
     protected function dispatchTranslation(int $pageId, ?int $sourceSiteId, ?string $targetLocale, int $fromIndex): void
     {
@@ -272,13 +298,23 @@ class PageTransferAction extends AbstractTransferAction
             return;
         }
 
-        $sourceLocale = $this->localeForSiteId($sourceSiteId);
+        $sourceSite = $sourceSiteId ? Site::find($sourceSiteId) : null;
 
-        if ($sourceLocale === null || $targetLocale === null) {
+        if ($sourceSite === null || ! $sourceSite->is_default) {
             return;
         }
 
-        if ($sourceLocale !== config('fsp.ai.base_locale') || $sourceLocale === $targetLocale) {
+        $sourceLocale = $sourceSite->locale;
+
+        if ($targetLocale === null) {
+            return;
+        }
+
+        // Same locale on both sites (locales may repeat): nothing to translate —
+        // tell the user so a ticked "Translate content" doesn't look stuck.
+        if ($sourceLocale === $targetLocale) {
+            $this->showInfoNotification(__('fsp::lang.messages.translation_same_locale'));
+
             return;
         }
 

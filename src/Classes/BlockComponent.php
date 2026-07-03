@@ -29,6 +29,25 @@ abstract class BlockComponent extends Component
     public static array $translatable = [];
 
     /**
+     * Dot-paths (relative to the block's `data`) of fields that hold links to be
+     * rewritten when a page is copied to another site — internal links get the
+     * target site's locale prefix / domain. Same "*" wildcard rules as
+     * $translatable; non-link fields are simply omitted.
+     *
+     * @var array<int, string>
+     */
+    public static array $links = [];
+
+    /**
+     * Dot-paths of rich-text (HTML) fields. On cross-site copy the href="..."
+     * attributes inside them are rewritten like $links, so inline editor links
+     * are localised too. Same "*" wildcard rules as $translatable.
+     *
+     * @var array<int, string>
+     */
+    public static array $htmlLinks = [];
+
+    /**
      * @param  array<string, mixed>  $data
      * @param  array<string, mixed>  $context
      */

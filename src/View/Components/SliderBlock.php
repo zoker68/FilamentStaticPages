@@ -27,6 +27,12 @@ class SliderBlock extends BlockComponent
         'slides.*.text',
     ];
 
+    /** @var array<int, string> */
+    public static array $links = ['slides.*.link'];
+
+    /** @var array<int, string> */
+    public static array $htmlLinks = ['slides.*.text'];
+
     public static string $viewNamespace = 'fsp';
 
     public static string $icon = 'heroicon-c-chevron-double-right';

@@ -28,6 +28,12 @@ class ImageWithTextBlock extends BlockComponent
         'blocks.*.link.text',
     ];
 
+    /** @var array<int, string> */
+    public static array $links = ['blocks.*.link.url'];
+
+    /** @var array<int, string> */
+    public static array $htmlLinks = ['blocks.*.text'];
+
     public static string $icon = 'heroicon-o-identification';
 
     public function render(): View
