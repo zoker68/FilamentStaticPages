@@ -63,5 +63,18 @@ return [
         // Short description of the site's topic/domain, injected into AI prompts so
         // translations pick the correct domain meaning of ambiguous terms.
         'context' => env('FSP_AI_CONTEXT'),
+
+        // HTTP timeout (seconds) for a single AI request. Overridden by shop when
+        // installed; declared here so standalone FilamentStaticPages has its own default.
+        'timeout' => env('FSP_AI_TIMEOUT', 180),
+
+        // Translator glossary, broken down per target language, plus "do not translate"
+        // product/brand names. Steers AI translation & SEO toward the correct terms.
+        // Used standalone; when zoker/shop is installed it supplies this from its database.
+        // Each row: ['term' => string, 'locale' => ?string, 'translation' => ?string,
+        //            'note' => ?string, 'do_not_translate' => bool]. Example:
+        //   ['term' => 'Magic Bits', 'do_not_translate' => true],
+        //   ['term' => 'bit', 'locale' => 'ru', 'translation' => 'фреза', 'note' => 'nail drill bit'],
+        'glossary' => [],
     ],
 ];

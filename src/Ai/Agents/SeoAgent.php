@@ -9,6 +9,7 @@ use Illuminate\JsonSchema\Types\Type;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
+use Zoker\FilamentStaticPages\Services\GlossaryPromptBuilder;
 
 /**
  * Generates an SEO title and meta description (in the given locale) for a page,
@@ -27,11 +28,23 @@ class SeoAgent implements Agent, HasStructuredOutput
             ? "The website's topic: {$context}. Use it to keep the SEO copy on-topic and accurate. "
             : '';
 
+        $glossary = app(GlossaryPromptBuilder::class)->build([$this->locale]);
+
         return "You are an SEO expert for the website '" . config('app.name') . "'. "
             . $context
             . "Given the page data as JSON, write an SEO-friendly title and meta description in locale {$this->locale}. "
             . 'The title must NOT include the site name (it is appended automatically) and be at most 60 characters. '
-            . 'The meta description must be at most 160 characters.';
+            . 'The meta description must be at most 160 characters.'
+            . ($glossary !== '' ? ' ' . $glossary : '');
+    }
+
+    /**
+     * HTTP timeout (seconds) for the AI request; configurable via fsp.ai.timeout
+     * (overridden by shop when installed).
+     */
+    public function timeout(): int
+    {
+        return (int) config('fsp.ai.timeout', 180);
     }
 
     /**

@@ -5,9 +5,18 @@ namespace Zoker\FilamentStaticPages;
 use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Zoker\FilamentStaticPages\Contracts\GlossaryProvider;
+use Zoker\FilamentStaticPages\Services\ConfigGlossaryProvider;
 
 class FilamentStaticPagesServiceProvider extends PackageServiceProvider
 {
+    public function packageRegistered(): void
+    {
+        // Default (standalone) glossary source: the `fsp.ai.glossary` config array.
+        // zoker/shop rebinds this to a database-backed provider during its boot.
+        $this->app->bind(GlossaryProvider::class, ConfigGlossaryProvider::class);
+    }
+
     public function configurePackage(Package $package): void
     {
         $package->name('fsp')

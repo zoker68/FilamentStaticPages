@@ -9,6 +9,7 @@ use Illuminate\JsonSchema\Types\Type;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
+use Zoker\FilamentStaticPages\Services\GlossaryPromptBuilder;
 
 /**
  * Translates a batch of labelled strings from one locale to another, returning
@@ -30,13 +31,25 @@ class TranslateAgent implements Agent, HasStructuredOutput
             ? "The website's topic: {$context}. Use it to resolve ambiguous terms and translate them in the correct domain-specific sense. "
             : '';
 
+        $glossary = app(GlossaryPromptBuilder::class)->build([$this->targetLocale]);
+
         return "You are a professional translator for the website '" . config('app.name') . "'. "
             . $context
             . 'You receive a JSON object with an `items` array; each item has a `key` and a `text`. '
             . "Translate every `text` from locale {$this->sourceLocale} to locale {$this->targetLocale}. "
             . 'Preserve all HTML tags, attributes and placeholders exactly as they appear. '
             . 'Return every item with its original `key` unchanged and the translated value in `translation`. '
-            . 'Do not add, remove, merge or reorder items.';
+            . 'Do not add, remove, merge or reorder items.'
+            . ($glossary !== '' ? ' ' . $glossary : '');
+    }
+
+    /**
+     * HTTP timeout (seconds) for the AI request; configurable via fsp.ai.timeout
+     * (overridden by shop when installed).
+     */
+    public function timeout(): int
+    {
+        return (int) config('fsp.ai.timeout', 180);
     }
 
     /**
