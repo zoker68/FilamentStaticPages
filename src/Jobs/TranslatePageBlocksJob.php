@@ -42,7 +42,7 @@ class TranslatePageBlocksJob implements ShouldQueue
             return;
         }
 
-        $page = Page::withoutGlobalScope('multisite')->find($this->pageId);
+        $page = Page::allSites()->find($this->pageId);
 
         if (! $page) {
             return;

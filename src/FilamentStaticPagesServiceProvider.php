@@ -29,6 +29,7 @@ class FilamentStaticPagesServiceProvider extends PackageServiceProvider
                 'create_menu_table',
                 'create_content_table',
                 'add_site_id_to_pages_table',
+                'add_original_id_to_pages_table',
             ]);
 
         Blade::componentNamespace('Zoker\\FilamentStaticPages\\View\\Components', 'fsp');

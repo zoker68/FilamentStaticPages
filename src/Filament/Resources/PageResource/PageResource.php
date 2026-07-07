@@ -89,6 +89,13 @@ class PageResource extends Resource
                                             ->toArray()
                                     ),
 
+                                Select::make('original_id')
+                                    ->label('Original page (default site)')
+                                    ->helperText('The page on the default site this one is a translation of — used for hreflang.')
+                                    ->searchable()
+                                    ->options(fn (): array => static::originalPageOptions())
+                                    ->visible(fn (?Page $record): bool => static::showsOriginalPicker($record)),
+
                                 Select::make('layout')
                                     ->label('Layout')
                                     ->required()
@@ -167,6 +174,35 @@ class PageResource extends Resource
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    /**
+     * Pages of the default (original) site — the candidates a translation can point at.
+     * Bypasses the multisite scope so cross-site pages are listed.
+     *
+     * @return array<int, string>
+     */
+    protected static function originalPageOptions(): array
+    {
+        $defaultSite = Site::getDefault();
+
+        if ($defaultSite === null) {
+            return [];
+        }
+
+        return Page::forSite($defaultSite)
+            ->pluck('name', 'id')
+            ->toArray();
+    }
+
+    /**
+     * The picker is shown only on non-default sites — a default-site page IS the original.
+     */
+    protected static function showsOriginalPicker(?Page $record): bool
+    {
+        $site = $record?->site ?? FilamentSiteManager::getCurrentSite();
+
+        return $site !== null && ! $site->is_default;
     }
 
     public static function getPages(): array

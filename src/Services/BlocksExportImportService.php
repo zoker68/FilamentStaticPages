@@ -191,8 +191,7 @@ class BlocksExportImportService
 
     protected function urlExistsForSite(string $url, Site $targetSite): bool
     {
-        return Page::withoutGlobalScope('multisite')
-            ->where('site_id', $targetSite->id)
+        return Page::forSite($targetSite)
             ->where('url', $url)
             ->exists();
     }

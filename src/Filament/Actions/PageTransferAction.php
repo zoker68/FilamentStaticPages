@@ -144,6 +144,7 @@ class PageTransferAction extends AbstractTransferAction
 
         $page = $service->importAsPage($exportData, $targetSite, $publish);
 
+        $this->linkToOriginal($page, $record);
         $this->rewriteCopiedLinks($page, $record->site, 0);
 
         $this->showSuccessNotification(
@@ -168,7 +169,7 @@ class PageTransferAction extends AbstractTransferAction
         /** @var Page $record */
         $record = $this->getRecord();
         /** @var ?Page $targetPage */
-        $targetPage = Page::withoutGlobalScope('multisite')->find($data['target_page']);
+        $targetPage = Page::allSites()->find($data['target_page']);
 
         if (! $targetPage) {
             $this->showErrorNotification(__('fsp::lang.messages.target_page_not_found'));
@@ -237,8 +238,7 @@ class PageTransferAction extends AbstractTransferAction
             return [];
         }
 
-        return Page::withoutGlobalScope('multisite')
-            ->where('site_id', $siteId)
+        return Page::forSite($siteId)
             ->pluck('name', 'id')
             ->toArray();
     }
@@ -278,6 +278,27 @@ class PageTransferAction extends AbstractTransferAction
      * target site (host + locale prefix). Only the tail from $fromIndex is
      * touched, keeping an existing target page's own blocks intact on append.
      */
+    /**
+     * Link the freshly copied page to its original (for hreflang). Copying out of
+     * the default site → the source IS the original; copying a translation → carry
+     * over its original. Otherwise there's no known original to link.
+     */
+    protected function linkToOriginal(Page $target, Page $source): void
+    {
+        // A page on the default site IS an original — it never points at one (and two
+        // group members on one site would collide in AlternateLinks, keyed by site).
+        if ($target->site?->is_default) {
+            return;
+        }
+
+        $originalId = $source->original_id ?? ($source->site?->is_default ? $source->id : null);
+
+        if ($originalId !== null) {
+            $target->original_id = $originalId;
+            $target->save();
+        }
+    }
+
     protected function rewriteCopiedLinks(Page $target, ?Site $sourceSite, int $fromIndex): void
     {
         if (! config('fsp.transfer.rewrite_links', true) || $sourceSite === null) {

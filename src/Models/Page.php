@@ -5,8 +5,10 @@ namespace Zoker\FilamentStaticPages\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
 use InvalidArgumentException;
 use Zoker\FilamentMultisite\Traits\HasMultisite;
@@ -18,6 +20,7 @@ use Zoker\FilamentStaticPages\Observers\PageObserver;
  * @property int $id
  * @property int $site_id
  * @property int $parent_id
+ * @property ?int $original_id
  * @property string $name
  * @property string $url
  * @property string $layout
@@ -46,11 +49,47 @@ class Page extends Model
         'url',
         'layout',
         'published',
+        'original_id',
     ];
 
     public function parent(): BelongsTo // @phpstan-ignore-line
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * The original page this one is a translation of (lives on the default site).
+     * Cross-site, so the multisite global scope is dropped.
+     */
+    public function original(): BelongsTo // @phpstan-ignore-line
+    {
+        return $this->belongsTo(self::class, 'original_id')->withoutGlobalScope('multisite');
+    }
+
+    /**
+     * Translations of this (original) page on the other sites.
+     */
+    public function translations(): HasMany // @phpstan-ignore-line
+    {
+        return $this->hasMany(self::class, 'original_id')->withoutGlobalScope('multisite');
+    }
+
+    /**
+     * All versions of this page across sites — the original plus its translations —
+     * regardless of the current site. Each carries its own site + localized url.
+     *
+     * @return Collection<int, self>
+     */
+    public function translationGroup(): Collection
+    {
+        $rootId = $this->original_id ?? $this->id;
+
+        return static::allSites()
+            ->with('site')
+            ->where(function (Builder $query) use ($rootId) {
+                $query->where('id', $rootId)->orWhere('original_id', $rootId);
+            })
+            ->get();
     }
 
     public function getTable(): string

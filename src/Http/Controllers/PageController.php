@@ -3,8 +3,6 @@
 namespace Zoker\FilamentStaticPages\Http\Controllers;
 
 use Illuminate\View\View;
-use Zoker\FilamentMultisite\Facades\SiteManager;
-use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Models\Page;
 
@@ -22,19 +20,21 @@ class PageController
     protected function setAlternateLinks(Page $page): void
     {
         $links = [];
-        $sites = Site::getForDomain(SiteManager::getCurrentSite()->domain);
-        $pages = Page::forSites($sites->pluck('id')->toArray())->url($page->url)->published()->get();
 
-        foreach ($sites as $site) {
-            $page = $pages->firstWhere('site_id', $site->id);
-            if (! $page) {
+        // Build hreflang alternates from the explicit translation group (original +
+        // its translations) rather than matching slugs — a translated page may have
+        // a different slug. Each version carries its own site + localized url.
+        foreach ($page->translationGroup() as $groupPage) {
+            $site = $groupPage->site;
+
+            if (! $groupPage->published || $site === null || ! $site->is_active) {
                 continue;
             }
 
             $links[] = [
                 'site' => $site,
-                'url' => $page->url
-                    ? multisite_route('fsp.page', ['page' => $page->url], site: $site)
+                'url' => $groupPage->url
+                    ? multisite_route('fsp.page', ['page' => $groupPage->url], site: $site)
                     : multisite_route('index', site: $site),
             ];
         }

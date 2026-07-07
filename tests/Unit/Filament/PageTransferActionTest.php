@@ -10,6 +10,7 @@ use Zoker\FilamentMultisite\Models\Site;
 use Zoker\FilamentStaticPages\Filament\Actions\PageTransferAction;
 use Zoker\FilamentStaticPages\Jobs\TranslatePageBlocksJob;
 use Zoker\FilamentStaticPages\Models\Page;
+use Zoker\FilamentStaticPages\Services\BlocksExportImportService;
 use Zoker\FilamentStaticPages\Tests\TestCase;
 
 class PageTransferActionTest extends TestCase
@@ -184,5 +185,91 @@ class PageTransferActionTest extends TestCase
         $page->save();
 
         return $page;
+    }
+
+    public function test_copy_from_default_site_links_the_new_page_to_the_original(): void
+    {
+        $default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+
+        $source = $this->pageOn($default);
+        $target = $this->pageOn($ru);
+
+        $this->invokeLinkToOriginal($target, $source);
+
+        expect(Page::withoutGlobalScope('multisite')->find($target->id)->original_id)->toBe($source->id);
+    }
+
+    public function test_copy_from_a_translation_carries_over_the_original(): void
+    {
+        $default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+        $de = Site::factory()->create(['is_active' => true, 'prefix' => 'de', 'locale' => 'de', 'is_default' => false]);
+
+        $original = $this->pageOn($default);
+        $ruTranslation = $this->pageOn($ru);
+        $ruTranslation->original_id = $original->id;
+        $ruTranslation->save();
+
+        $target = $this->pageOn($de);
+        $this->invokeLinkToOriginal($target, $ruTranslation);
+
+        expect(Page::withoutGlobalScope('multisite')->find($target->id)->original_id)->toBe($original->id);
+    }
+
+    public function test_copy_from_a_non_default_page_without_original_leaves_it_unlinked(): void
+    {
+        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+        $de = Site::factory()->create(['is_active' => true, 'prefix' => 'de', 'locale' => 'de', 'is_default' => false]);
+
+        $source = $this->pageOn($ru);
+        $target = $this->pageOn($de);
+
+        $this->invokeLinkToOriginal($target, $source);
+
+        expect(Page::withoutGlobalScope('multisite')->find($target->id)->original_id)->toBeNull();
+    }
+
+    public function test_copy_to_new_page_handler_links_the_copy_to_its_original(): void
+    {
+        config(['fsp.ai.enabled' => false]);
+        Queue::fake();
+
+        $default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+
+        $source = $this->pageOn($default);
+
+        // Drive the real handler (not just linkToOriginal) so the wiring is covered.
+        $action = PageTransferAction::make()->record($source);
+        $method = new ReflectionMethod($action, 'handleCopyToNewPage');
+        $method->setAccessible(true);
+        $method->invoke($action, ['action_type' => 'copy_new', 'target_site' => $ru->id, 'publish' => false], new BlocksExportImportService);
+
+        $copied = Page::withoutGlobalScope('multisite')->where('site_id', $ru->id)->first();
+
+        expect($copied)->not->toBeNull()
+            ->and($copied->original_id)->toBe($source->id);
+    }
+
+    public function test_a_copy_landing_on_the_default_site_is_never_linked(): void
+    {
+        $default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+
+        $source = $this->pageOn($ru);
+        $target = $this->pageOn($default); // lands on the default site → stays an original
+
+        $this->invokeLinkToOriginal($target, $source);
+
+        expect(Page::withoutGlobalScope('multisite')->find($target->id)->original_id)->toBeNull();
+    }
+
+    private function invokeLinkToOriginal(Page $target, Page $source): void
+    {
+        $action = PageTransferAction::make();
+        $method = new ReflectionMethod($action, 'linkToOriginal');
+        $method->setAccessible(true);
+        $method->invoke($action, $target, $source);
     }
 }
