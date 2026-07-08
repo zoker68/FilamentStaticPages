@@ -35,6 +35,8 @@ class TestCase extends Orchestra
         $this->loadMigrationsFrom($multisiteMigrations . '/create_sites_table.php');
         $this->loadMigrationsFrom($multisiteMigrations . '/add_label_to_sites_table.php');
         $this->loadMigrationsFrom($multisiteMigrations . '/add_is_default_to_sites_table.php');
+        $this->loadMigrationsFrom($multisiteMigrations . '/create_site_groups_table.php');
+        $this->loadMigrationsFrom($multisiteMigrations . '/add_site_group_id_to_sites_table.php');
 
         $migrations = __DIR__ . '/../database/migrations';
         foreach ([
@@ -54,11 +56,13 @@ class TestCase extends Orchestra
     protected function resetSiteStaticCaches(): void
     {
         $reflection = new \ReflectionClass(Site::class);
-        foreach (['sitesForDomain', 'usingLocales'] as $property) {
-            $prop = $reflection->getProperty($property);
-            $prop->setAccessible(true);
-            $prop->setValue(null);
-        }
+        $usingLocales = $reflection->getProperty('usingLocales');
+        $usingLocales->setAccessible(true);
+        $usingLocales->setValue(null);
+
+        $groupProp = $reflection->getProperty('sitesForGroup');
+        $groupProp->setAccessible(true);
+        $groupProp->setValue([]);
     }
 
     protected function getPackageProviders($app): array

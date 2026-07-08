@@ -93,7 +93,7 @@ class PageResource extends Resource
                                     ->label('Original page (default site)')
                                     ->helperText('The page on the default site this one is a translation of — used for hreflang.')
                                     ->searchable()
-                                    ->options(fn (): array => static::originalPageOptions())
+                                    ->options(fn (?Page $record): array => static::originalPageOptions($record))
                                     ->visible(fn (?Page $record): bool => static::showsOriginalPicker($record)),
 
                                 Select::make('layout')
@@ -182,9 +182,10 @@ class PageResource extends Resource
      *
      * @return array<int, string>
      */
-    protected static function originalPageOptions(): array
+    protected static function originalPageOptions(?Page $record): array
     {
-        $defaultSite = Site::getDefault();
+        $site = $record?->site ?? FilamentSiteManager::getCurrentSite();
+        $defaultSite = Site::getDefaultForGroup($site?->site_group_id);
 
         if ($defaultSite === null) {
             return [];

@@ -24,22 +24,26 @@ class PageResourcePickerTest extends TestCase
         $this->assertTrue($method->invoke(null, $this->pageOn($ru)));
     }
 
-    public function test_original_picker_options_are_only_default_site_pages(): void
+    public function test_original_picker_options_are_only_default_site_pages_of_the_records_group(): void
     {
-        $default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
-        $ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+        $default = Site::factory()->create(['site_group_id' => 1, 'is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['site_group_id' => 1, 'is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+        // A default page in another group must not be offered as an original here.
+        $otherDefault = Site::factory()->create(['site_group_id' => 2, 'is_active' => true, 'prefix' => 'de', 'locale' => 'de', 'is_default' => true]);
 
         $original = $this->pageOn($default);
         $ruPage = $this->pageOn($ru);
+        $otherPage = $this->pageOn($otherDefault);
 
         $method = new ReflectionMethod(PageResource::class, 'originalPageOptions');
         $method->setAccessible(true);
 
         /** @var array<int, string> $options */
-        $options = $method->invoke(null);
+        $options = $method->invoke(null, $ruPage);
 
-        $this->assertArrayHasKey($original->id, $options);
-        $this->assertArrayNotHasKey($ruPage->id, $options);
+        $this->assertArrayHasKey($original->id, $options);       // default site of the group
+        $this->assertArrayNotHasKey($ruPage->id, $options);      // the translation itself
+        $this->assertArrayNotHasKey($otherPage->id, $options);   // other group's default
     }
 
     private function pageOn(Site $site): Page

@@ -59,6 +59,27 @@ class PageAlternateLinksTest extends TestCase
         $this->assertCount(1, AlternateLinks::get());
     }
 
+    public function test_versions_from_another_group_are_excluded(): void
+    {
+        $default = Site::factory()->create(['site_group_id' => 1, 'is_active' => true, 'prefix' => null, 'locale' => 'en', 'is_default' => true]);
+        $ru = Site::factory()->create(['site_group_id' => 1, 'is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'is_default' => false]);
+        // Same original_id but a site in a DIFFERENT group — must NOT leak into hreflang.
+        $other = Site::factory()->create(['site_group_id' => 2, 'is_active' => true, 'prefix' => 'de', 'locale' => 'de', 'is_default' => true]);
+
+        $original = $this->makePage($default, 'contact');
+        $this->makePage($ru, 'kontakt', $original->id);
+        $this->makePage($other, 'kontakt-de', $original->id);
+
+        $this->invokeSetAlternateLinks($original);
+
+        $links = AlternateLinks::get();
+
+        $this->assertCount(2, $links);
+        $this->assertArrayHasKey($default->id, $links);
+        $this->assertArrayHasKey($ru->id, $links);
+        $this->assertArrayNotHasKey($other->id, $links);
+    }
+
     private function invokeSetAlternateLinks(Page $page): void
     {
         $controller = new PageController;

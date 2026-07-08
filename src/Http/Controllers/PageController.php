@@ -20,14 +20,16 @@ class PageController
     protected function setAlternateLinks(Page $page): void
     {
         $links = [];
+        $groupId = $page->site?->site_group_id;
 
         // Build hreflang alternates from the explicit translation group (original +
         // its translations) rather than matching slugs — a translated page may have
         // a different slug. Each version carries its own site + localized url.
+        // Constrain to the page's site group (independent of domain).
         foreach ($page->translationGroup() as $groupPage) {
             $site = $groupPage->site;
 
-            if (! $groupPage->published || $site === null || ! $site->is_active) {
+            if (! $groupPage->published || $site === null || ! $site->is_active || $site->site_group_id !== $groupId) {
                 continue;
             }
 
