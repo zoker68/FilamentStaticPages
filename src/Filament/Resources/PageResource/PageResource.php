@@ -184,7 +184,7 @@ class PageResource extends Resource
      */
     protected static function originalPageOptions(?Page $record): array
     {
-        $site = $record?->site ?? FilamentSiteManager::getCurrentSite();
+        $site = static::resolvedSite($record);
         $defaultSite = Site::getDefaultForGroup($site?->site_group_id);
 
         if ($defaultSite === null) {
@@ -201,9 +201,18 @@ class PageResource extends Resource
      */
     protected static function showsOriginalPicker(?Page $record): bool
     {
-        $site = $record?->site ?? FilamentSiteManager::getCurrentSite();
+        $site = static::resolvedSite($record);
 
         return $site !== null && ! $site->is_default;
+    }
+
+    /**
+     * The site a form field should reason about: the record's own site, or the
+     * site currently in scope when the record does not exist yet (create page).
+     */
+    protected static function resolvedSite(?Page $record): ?Site
+    {
+        return $record?->site ?? FilamentSiteManager::getCurrentSite();
     }
 
     public static function getPages(): array

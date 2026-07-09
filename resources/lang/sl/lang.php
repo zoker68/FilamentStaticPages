@@ -14,6 +14,7 @@ return [
         'copy_to_existing_content' => 'Kopiraj bloke na obstoječo vsebino',
         'publish_after_import' => 'Objavi po uvozu',
         'publish_after_copy' => 'Objavi po kopiranju',
+        'sync_translations' => 'Sinhroniziraj prevode',
     ],
     'form' => [
         'action' => 'Dejanje',
@@ -49,6 +50,10 @@ return [
         'blocks_copied_to_content' => 'Blokov je bilo kopiranih v ":code" (:locale)',
         'translation_queued' => 'Prevod v :locale je v čakalni vrsti in se bo kmalu prikazal.',
         'translation_same_locale' => 'Ciljna stran uporablja isti jezik kot privzeta stran — ni kaj prevajati.',
+        'sync_translations_warning' => 'To zamenja vsebino vseh povezanih prevodov z vsebino te strani in jih znova prevede. Vse ročne spremembe v prevodih bodo izgubljene. Neshranjene spremembe te strani niso vključene — najprej shranite stran.',
+        'sync_translations_queued' => 'Vsebina sinhronizirana v :count prevod(ov); prevod je v čakalni vrsti.',
+        'sync_translations_synced' => 'Vsebina sinhronizirana v :count prevod(ov).',
+        'sync_no_translations' => 'Ta stran nima povezanih prevodov za sinhronizacijo.',
     ],
     'blocks' => [
         'heading' => 'Naslov',

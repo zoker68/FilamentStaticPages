@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zoker\FilamentStaticPages\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,7 +20,7 @@ use Zoker\FilamentStaticPages\Services\BlockContentTranslator;
  * $fromIndex is translated, so appended copies do not re-translate (and corrupt)
  * blocks that already exist on the target page in its own language.
  */
-class TranslatePageBlocksJob implements ShouldQueue
+class TranslatePageBlocksJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -27,12 +28,29 @@ class TranslatePageBlocksJob implements ShouldQueue
 
     public int $timeout = 300;
 
+    /**
+     * Safety-net TTL for the uniqueness lock (normally released when the job
+     * finishes); must outlive $timeout so a running job keeps its lock.
+     */
+    public int $uniqueFor = 600;
+
     public function __construct(
         public int $pageId,
         public string $sourceLocale,
         public string $targetLocale,
         public int $fromIndex = 0,
     ) {}
+
+    /**
+     * Deduplicate identical whole-slice translations: a re-dispatched job would
+     * re-read the page at run time and feed already-translated text back to the
+     * AI declared as the source language, garbling the content. Distinct slices
+     * (different fromIndex, e.g. two appends) stay independently queueable.
+     */
+    public function uniqueId(): string
+    {
+        return $this->pageId . ':' . $this->targetLocale . ':' . $this->fromIndex;
+    }
 
     public function handle(): void
     {

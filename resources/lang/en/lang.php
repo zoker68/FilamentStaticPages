@@ -14,6 +14,7 @@ return [
         'copy_to_existing_content' => 'Copy blocks to existing content',
         'publish_after_import' => 'Publish after import',
         'publish_after_copy' => 'Publish after copy',
+        'sync_translations' => 'Sync translations',
     ],
     'form' => [
         'action' => 'Action',
@@ -49,6 +50,10 @@ return [
         'blocks_copied_to_content' => 'Blocks have been copied to ":code" (:locale)',
         'translation_queued' => 'Translation to :locale has been queued and will appear shortly.',
         'translation_same_locale' => 'The target site uses the same language as the default site — nothing to translate.',
+        'sync_translations_warning' => 'This replaces the content of all linked translations with this page\'s content and re-translates them. Any manual edits in the translations will be lost. Unsaved changes on this page are not included — save the page first.',
+        'sync_translations_queued' => 'Content synced to :count translation(s); translation has been queued.',
+        'sync_translations_synced' => 'Content synced to :count translation(s).',
+        'sync_no_translations' => 'This page has no linked translations to sync.',
     ],
     'blocks' => [
         'heading' => 'Heading',
