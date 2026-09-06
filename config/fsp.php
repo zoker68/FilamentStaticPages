@@ -35,6 +35,26 @@ return [
     'disk' => env('FSP_DISK', 'public'),
 
     /**
+     * Site name for og:site_name in the Meta block.
+     */
+    'site_name' => env('FSP_SITE_NAME', env('APP_NAME')),
+
+    /**
+     * 1200×630 fallback for og:image when a page has no social image of its own.
+     */
+    'og_image_url' => env('FSP_OG_IMAGE_URL'),
+
+    /**
+     * og:locale needs language_TERRITORY; the app locale is only the language.
+     */
+    'og_locales' => [
+        'bg' => 'bg_BG', 'cs' => 'cs_CZ', 'da' => 'da_DK', 'de' => 'de_DE', 'el' => 'el_GR', 'en' => 'en_US',
+        'es' => 'es_ES', 'et' => 'et_EE', 'fi' => 'fi_FI', 'fr' => 'fr_FR', 'hr' => 'hr_HR', 'hu' => 'hu_HU',
+        'it' => 'it_IT', 'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL', 'pl' => 'pl_PL', 'pt' => 'pt_PT',
+        'ro' => 'ro_RO', 'ru' => 'ru_RU', 'sk' => 'sk_SK', 'sl' => 'sl_SI', 'sv' => 'sv_SE', 'uk' => 'uk_UA',
+    ],
+
+    /**
      * Cross-site transfer behavior.
      */
     'transfer' => [

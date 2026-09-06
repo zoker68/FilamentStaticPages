@@ -3,6 +3,7 @@
 namespace Zoker\FilamentStaticPages\View\Components;
 
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +13,8 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
@@ -62,6 +65,17 @@ class MetaBlock extends BlockComponent
             ]),
 
             Group::make(self::getDescriptionField()),
+
+            FileUpload::make('social_image')
+                ->label('Social share image')
+                ->helperText('Shown in link previews (og:image). Recommended 1200×630 px.')
+                ->image()
+                ->disk(config('fsp.disk'))
+                ->directory('meta')
+                ->maxSize(5 * 1024)
+                ->imageEditor()
+                ->imageEditorAspectRatioOptions([null, '1200:630'])
+                ->columnSpanFull(),
         ];
     }
 
@@ -119,6 +133,33 @@ class MetaBlock extends BlockComponent
             AlternateLinks::setCanonicalUrl($this->data['canonical_url']);
         }
 
+        $this->data['ogUrl'] = AlternateLinks::getCanonicalUrl();
+        $this->data['ogImage'] = $this->getSocialImageUrl();
+        $this->data['siteName'] = (string) config('fsp.site_name');
+        $this->data['ogLocale'] = config('fsp.og_locales.' . app()->getLocale()) ?? app()->getLocale();
+
         return parent::render();
+    }
+
+    /**
+     * Absolute URL of the page's social image, or the configured fallback; null when neither exists.
+     */
+    public function getSocialImageUrl(): ?string
+    {
+        $image = $this->data['social_image'] ?? null;
+
+        if (is_string($image) && $image !== '') {
+            $url = Str::startsWith($image, ['http://', 'https://'])
+                ? $image
+                : Storage::disk(config('fsp.disk'))->url($image);
+        } else {
+            $url = config('fsp.og_image_url');
+        }
+
+        if (! is_string($url) || $url === '') {
+            return null;
+        }
+
+        return Str::startsWith($url, ['http://', 'https://']) ? $url : url($url);
     }
 }
