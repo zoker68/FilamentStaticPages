@@ -44,7 +44,7 @@ class MetaBlock extends BlockComponent
                     ->hint(fn ($state) => strlen($state) . ' characters')
                     ->hintColor(fn ($state) => strlen($state) > 60 ? 'danger' : null)
                     ->helperText('Recommended maximum length: 60 characters')
-                    ->default(fn (Get $get) => $get('../../../name') . ' | ' . config('app.name')),
+                    ->default(fn (Get $get) => (string) $get('../../../name')),
                 Select::make('indexing')
                     ->label('Allow robots indexing?')
                     ->selectablePlaceholder(false)
@@ -118,7 +118,7 @@ class MetaBlock extends BlockComponent
                                     model: config('fsp.ai.model'),
                                 );
 
-                                $set('title', (string) $response['title'] . ' | ' . config('app.name'));
+                                $set('title', (string) $response['title']);
                                 $set('description', (string) $response['description']);
                             }),
                     );

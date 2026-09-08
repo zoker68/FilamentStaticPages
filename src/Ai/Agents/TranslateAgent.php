@@ -33,7 +33,7 @@ class TranslateAgent implements Agent, HasStructuredOutput
 
         $glossary = app(GlossaryPromptBuilder::class)->build([$this->targetLocale]);
 
-        return "You are a professional translator for the website '" . config('app.name') . "'. "
+        return "You are a professional translator for the website '" . config('fsp.site_name') . "'. "
             . $context
             . 'You receive a JSON object with an `items` array; each item has a `key` and a `text`. '
             . "Translate every `text` from locale {$this->sourceLocale} to locale {$this->targetLocale}. "

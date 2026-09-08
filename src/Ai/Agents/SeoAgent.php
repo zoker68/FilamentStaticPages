@@ -30,10 +30,10 @@ class SeoAgent implements Agent, HasStructuredOutput
 
         $glossary = app(GlossaryPromptBuilder::class)->build([$this->locale]);
 
-        return "You are an SEO expert for the website '" . config('app.name') . "'. "
+        return "You are an SEO expert for the website '" . config('fsp.site_name') . "'. "
             . $context
             . "Given the page data as JSON, write an SEO-friendly title and meta description in locale {$this->locale}. "
-            . 'The title must NOT include the site name (it is appended automatically) and be at most 60 characters. '
+            . 'The title must NOT include the site name and be at most 60 characters. '
             . 'The meta description must be at most 160 characters.'
             . ($glossary !== '' ? ' ' . $glossary : '');
     }
