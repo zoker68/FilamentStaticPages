@@ -19,6 +19,7 @@ use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
+use Zoker\FilamentStaticPages\Support\SeoTitle;
 
 class MetaBlock extends BlockComponent
 {
@@ -44,7 +45,7 @@ class MetaBlock extends BlockComponent
                     ->hint(fn ($state) => strlen($state) . ' characters')
                     ->hintColor(fn ($state) => strlen($state) > 60 ? 'danger' : null)
                     ->helperText('Recommended maximum length: 60 characters')
-                    ->default(fn (Get $get) => (string) $get('../../../name')),
+                    ->default(fn (Get $get) => SeoTitle::withSuffix((string) $get('../../../name'))),
                 Select::make('indexing')
                     ->label('Allow robots indexing?')
                     ->selectablePlaceholder(false)
@@ -118,7 +119,7 @@ class MetaBlock extends BlockComponent
                                     model: config('fsp.ai.model'),
                                 );
 
-                                $set('title', (string) $response['title']);
+                                $set('title', SeoTitle::withSuffix((string) $response['title']));
                                 $set('description', (string) $response['description']);
                             }),
                     );
