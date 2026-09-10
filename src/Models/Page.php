@@ -3,6 +3,7 @@
 namespace Zoker\FilamentStaticPages\Models;
 
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -97,27 +98,19 @@ class Page extends Model
         return config('fsp.table_prefix') . 'pages';
     }
 
-    /** @return array<string> */
+    /** @return array<int, array<string, mixed>> */
     public static function getAllRoutes(): array
     {
-        if (! cache()->has(self::CACHE_KEY_ROUTES) && ! Schema::hasTable((new self)->getTable())) {
-            return [];
-        }
-
-        return cache()->rememberForever(
+        return self::rememberNonEmpty(
             self::CACHE_KEY_ROUTES,
             fn () => self::allSites()->with('site')->published()->get()->toArray()
         );
     }
 
-    /** @return array<string> */
+    /** @return array<int, ?string> */
     public static function getAllowedUrls(): array
     {
-        if (! cache()->has(self::CACHE_KEY_ALLOWED_URLS) && ! Schema::hasTable((new self)->getTable())) {
-            return [];
-        }
-
-        return cache()->rememberForever(
+        return self::rememberNonEmpty(
             self::CACHE_KEY_ALLOWED_URLS,
             fn () => self::allSites()
                 ->published()
@@ -126,6 +119,32 @@ class Page extends Model
                 ->values()
                 ->toArray()
         );
+    }
+
+    /**
+     * Never caches an empty result: an artisan run against another database shares the store and would pin it for the live site.
+     *
+     * @param  Closure(): array<mixed>  $resolve
+     * @return array<mixed>
+     */
+    private static function rememberNonEmpty(string $key, Closure $resolve): array
+    {
+        // An empty array can only be a leftover of the old code: treat it as a miss so it heals itself.
+        $cached = cache()->get($key);
+        if (is_array($cached) && $cached !== []) {
+            return $cached;
+        }
+
+        if (! Schema::hasTable((new self)->getTable())) {
+            return [];
+        }
+
+        $result = $resolve();
+        if ($result !== []) {
+            cache()->forever($key, $result);
+        }
+
+        return $result;
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zoker\FilamentStaticPages\Tests\Unit\View\Components;
 
 use Illuminate\Support\Facades\Blade;
+use Zoker\FilamentMultisite\Facades\SiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Tests\TestCase;
 use Zoker\FilamentStaticPages\View\Components\MetaBlock;
@@ -17,6 +18,8 @@ class MetaBlockTest extends TestCase
 
         AlternateLinks::clear();
         config(['fsp.site_name' => 'Test Site', 'fsp.og_image_url' => null]);
+        // Resolving the current site sets the app locale; do it before a test picks its own.
+        SiteManager::getCurrentSite();
     }
 
     protected function tearDown(): void

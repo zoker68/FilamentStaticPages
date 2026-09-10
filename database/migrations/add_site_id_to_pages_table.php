@@ -15,8 +15,8 @@ return new class extends Migration
                 ->nullable()
                 ->after('id');
         });
-        Page::query()->update([
-            'site_id' => Site::query()->first()->id,
+        Page::query()->withoutGlobalScopes()->update([
+            'site_id' => Site::query()->withoutGlobalScopes()->value('id'),
         ]);
 
         Schema::table((new Page)->getTable(), function (Blueprint $table) {
