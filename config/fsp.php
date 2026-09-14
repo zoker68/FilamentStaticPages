@@ -78,7 +78,7 @@ return [
 
         // laravel/ai provider (openai, anthropic, gemini, ...) and model.
         'provider' => env('FSP_AI_PROVIDER', 'openai'),
-        'model' => env('FSP_AI_MODEL', 'gpt-4o-mini'),
+        'model' => env('FSP_AI_MODEL', 'gpt-5.6-luna'),
 
         // Short description of the site's topic/domain, injected into AI prompts so
         // translations pick the correct domain meaning of ambiguous terms.

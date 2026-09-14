@@ -119,7 +119,7 @@ Configure via `.env` (standalone — i.e. without `zoker/shop`):
 |---|---|---|
 | `FSP_AI_ENABLED` | `false` | Master switch. |
 | `FSP_AI_PROVIDER` | `openai` | `laravel/ai` provider. |
-| `FSP_AI_MODEL` | `gpt-4o-mini` | Model. |
+| `FSP_AI_MODEL` | `gpt-5.6-luna` | Model. |
 | `FSP_AI_CONTEXT` | — | Short description of the site's topic/domain, injected into prompts so ambiguous terms are translated in the right sense. |
 
 The API key is read by `laravel/ai` from its own config/env (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …) — not from this package's config.
