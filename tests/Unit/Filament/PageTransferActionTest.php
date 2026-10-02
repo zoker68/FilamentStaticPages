@@ -60,7 +60,7 @@ class PageTransferActionTest extends TestCase
 
     public function test_rewrite_copied_links_localises_internal_links_for_the_target_site(): void
     {
-        config(['app.url' => 'https://bsg-europe.com']);
+        config(['app.url' => 'https://shop.example']);
         $source = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'domain' => null]);
         $target = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'domain' => null]);
 
@@ -74,7 +74,7 @@ class PageTransferActionTest extends TestCase
 
     public function test_rewrite_copied_links_respects_the_disable_flag(): void
     {
-        config(['app.url' => 'https://bsg-europe.com', 'fsp.transfer.rewrite_links' => false]);
+        config(['app.url' => 'https://shop.example', 'fsp.transfer.rewrite_links' => false]);
         $source = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'domain' => null]);
         $target = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'domain' => null]);
 

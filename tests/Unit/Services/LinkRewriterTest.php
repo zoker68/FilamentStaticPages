@@ -21,7 +21,7 @@ class LinkRewriterTest extends TestCase
         parent::setUp();
 
         // The app lives on a single domain with locale prefixes (the user's setup).
-        config(['app.url' => 'https://bsg-europe.com']);
+        config(['app.url' => 'https://shop.example']);
 
         $this->default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'domain' => null]);
         $this->en = Site::factory()->create(['is_active' => true, 'prefix' => 'en', 'locale' => 'en', 'domain' => null]);
@@ -40,14 +40,14 @@ class LinkRewriterTest extends TestCase
 
     public function test_it_strips_our_host_from_an_absolute_internal_link(): void
     {
-        expect($this->rewriter()->rewrite('https://bsg-europe.com/contact', $this->default, $this->ru))
+        expect($this->rewriter()->rewrite('https://shop.example/contact', $this->default, $this->ru))
             ->toBe('/ru/contact');
     }
 
     public function test_it_swaps_an_existing_locale_prefix(): void
     {
         // "en" is an active site prefix, so it is stripped before "ru" is applied.
-        expect($this->rewriter()->rewrite('https://bsg-europe.com/en/contact', $this->default, $this->ru))
+        expect($this->rewriter()->rewrite('https://shop.example/en/contact', $this->default, $this->ru))
             ->toBe('/ru/contact');
 
         // And a prefixed source → the unprefixed default site.
@@ -99,15 +99,15 @@ class LinkRewriterTest extends TestCase
         // Public storage dir is not a locale-scoped page route — must not be prefixed.
         expect($rewriter->rewrite('/storage/docs/brochure.pdf', $this->default, $this->ru))
             ->toBe('/storage/docs/brochure.pdf')
-            ->and($rewriter->rewrite('https://bsg-europe.com/storage/banners/a.jpg', $this->default, $this->ru))
-            ->toBe('https://bsg-europe.com/storage/banners/a.jpg');
+            ->and($rewriter->rewrite('https://shop.example/storage/banners/a.jpg', $this->default, $this->ru))
+            ->toBe('https://shop.example/storage/banners/a.jpg');
     }
 
     public function test_it_normalizes_backslashes_to_prevent_protocol_relative_escape(): void
     {
         // WHATWG: browsers treat "\" as "/" for http(s); a same-host "/\evil.com/x"
         // must not survive as a protocol-relative off-site link.
-        $result = $this->rewriter()->rewrite('https://bsg-europe.com/\\evil.com/phish', $this->default, $this->ru);
+        $result = $this->rewriter()->rewrite('https://shop.example/\\evil.com/phish', $this->default, $this->ru);
 
         expect($result)->toBe('/ru/evil.com/phish')
             ->and(str_contains($result, '\\'))->toBeFalse()
@@ -135,19 +135,19 @@ class LinkRewriterTest extends TestCase
         $rewriter = $this->rewriter();
 
         expect($rewriter->rewrite('/', $this->default, $this->ru))->toBe('/ru')
-            ->and($rewriter->rewrite('https://bsg-europe.com', $this->default, $this->ru))->toBe('/ru')
+            ->and($rewriter->rewrite('https://shop.example', $this->default, $this->ru))->toBe('/ru')
             ->and($rewriter->rewrite('/', $this->default, $this->default))->toBe('/');
     }
 
     public function test_it_treats_a_different_port_on_our_host_as_external(): void
     {
-        expect($this->rewriter()->rewrite('https://bsg-europe.com:8443/x', $this->default, $this->ru))
-            ->toBe('https://bsg-europe.com:8443/x');
+        expect($this->rewriter()->rewrite('https://shop.example:8443/x', $this->default, $this->ru))
+            ->toBe('https://shop.example:8443/x');
     }
 
     public function test_it_treats_www_of_our_host_as_internal(): void
     {
-        expect($this->rewriter()->rewrite('https://www.bsg-europe.com/contact', $this->default, $this->ru))
+        expect($this->rewriter()->rewrite('https://www.shop.example/contact', $this->default, $this->ru))
             ->toBe('/ru/contact');
     }
 
@@ -155,7 +155,7 @@ class LinkRewriterTest extends TestCase
     {
         $rewriter = $this->rewriter();
 
-        expect($rewriter->rewrite('//bsg-europe.com/contact', $this->default, $this->ru))->toBe('/ru/contact')
-            ->and($rewriter->rewrite('https://BSG-EUROPE.COM/contact', $this->default, $this->ru))->toBe('/ru/contact');
+        expect($rewriter->rewrite('//shop.example/contact', $this->default, $this->ru))->toBe('/ru/contact')
+            ->and($rewriter->rewrite('https://SHOP.EXAMPLE/contact', $this->default, $this->ru))->toBe('/ru/contact');
     }
 }

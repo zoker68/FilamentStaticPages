@@ -20,7 +20,7 @@ class BlockLinkRewriterTest extends TestCase
     {
         parent::setUp();
 
-        config(['app.url' => 'https://bsg-europe.com']);
+        config(['app.url' => 'https://shop.example']);
 
         $this->default = Site::factory()->create(['is_active' => true, 'prefix' => null, 'locale' => 'en', 'domain' => null]);
         $this->ru = Site::factory()->create(['is_active' => true, 'prefix' => 'ru', 'locale' => 'ru', 'domain' => null]);
