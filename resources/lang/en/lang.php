@@ -34,6 +34,7 @@ return [
     'messages' => [
         'error' => 'Error',
         'success' => 'Success',
+        'ai_insufficient_credits' => 'The AI provider has run out of credits or quota. Top up the balance and try again.',
         'could_not_read_file' => 'Could not read the file',
         'invalid_json_format' => 'Invalid JSON format or missing required fields',
         'content_imported' => 'Content ":code" has been imported (:locale)',

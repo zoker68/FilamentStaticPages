@@ -34,6 +34,7 @@ return [
     'messages' => [
         'error' => 'Ошибка',
         'success' => 'Успешно',
+        'ai_insufficient_credits' => 'У AI-провайдера закончились средства или квота. Пополните баланс и попробуйте снова.',
         'could_not_read_file' => 'Не удалось прочитать файл',
         'invalid_json_format' => 'Неверный формат JSON или отсутствуют обязательные поля',
         'content_imported' => 'Контент ":code" импортирован (:locale)',

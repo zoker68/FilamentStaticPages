@@ -34,6 +34,7 @@ return [
     'messages' => [
         'error' => 'Napaka',
         'success' => 'Uspešno',
+        'ai_insufficient_credits' => 'Ponudniku umetne inteligence je zmanjkalo dobroimetja ali kvote. Napolnite stanje in poskusite znova.',
         'could_not_read_file' => 'Ni bilo mogoče prebrati datoteke',
         'invalid_json_format' => 'Neveljavni JSON format ali manjkajo obvezna polja',
         'content_imported' => 'Vsebina ":code" je bila uvožena (:locale)',

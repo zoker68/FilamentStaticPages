@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Utilities\Get;
@@ -15,6 +16,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Laravel\Ai\Exceptions\InsufficientCreditsException;
 use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
@@ -113,11 +115,22 @@ class MetaBlock extends BlockComponent
                             ->action(function (Set $set, Get $get) {
                                 $pageSettings = $get('../../../');
 
-                                $response = (new SeoAgent(FilamentSiteManager::getCurrentSiteLocale()))->prompt(
-                                    json_encode($pageSettings, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}',
-                                    provider: config('fsp.ai.provider'),
-                                    model: config('fsp.ai.model'),
-                                );
+                                try {
+                                    $response = (new SeoAgent(FilamentSiteManager::getCurrentSiteLocale()))->prompt(
+                                        json_encode($pageSettings, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}',
+                                        provider: config('fsp.ai.provider'),
+                                        model: config('fsp.ai.model'),
+                                    );
+                                } catch (InsufficientCreditsException $e) {
+                                    report($e);
+
+                                    Notification::make()
+                                        ->danger()
+                                        ->title(__('fsp::lang.messages.ai_insufficient_credits'))
+                                        ->send();
+
+                                    return;
+                                }
 
                                 $set('title', SeoTitle::withSuffix((string) $response['title']));
                                 $set('description', (string) $response['description']);

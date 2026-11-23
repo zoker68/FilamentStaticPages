@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Zoker\FilamentStaticPages\Tests\Unit\View\Components;
 
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Facades\Blade;
+use Laravel\Ai\Exceptions\InsufficientCreditsException;
+use Mockery;
 use Zoker\FilamentMultisite\Facades\SiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
+use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
 use Zoker\FilamentStaticPages\Tests\TestCase;
 use Zoker\FilamentStaticPages\View\Components\MetaBlock;
 
@@ -106,5 +112,21 @@ class MetaBlockTest extends TestCase
         $names = array_map(fn ($component) => $component->getName(), array_filter(MetaBlock::getSchema(), fn ($component) => method_exists($component, 'getName')));
 
         $this->assertContains('social_image', $names);
+    }
+
+    public function test_generate_seo_tells_the_admin_when_the_ai_provider_has_no_credits(): void
+    {
+        config(['fsp.ai.enabled' => true]);
+        SeoAgent::fake(fn () => throw InsufficientCreditsException::forProvider('openai', 429));
+
+        $entry = collect(MetaBlock::getDescriptionField())->first(fn ($component) => $component->getName() === 'generateAI');
+        $get = Mockery::mock(Get::class);
+        $get->shouldReceive('__invoke')->andReturn(['title' => 'About us']);
+        $set = Mockery::mock(Set::class);
+        $set->shouldNotReceive('__invoke');
+
+        $entry->getHintActions()[0]->call(['get' => $get, 'set' => $set]);
+
+        Notification::assertNotified(__('fsp::lang.messages.ai_insufficient_credits'));
     }
 }
