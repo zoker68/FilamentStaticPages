@@ -55,6 +55,27 @@ return [
     ],
 
     /**
+     * JSON-LD Organization and WebSite on the home page (the page with an empty url), output by the Meta block.
+     * Empty values are left out of the markup.
+     */
+    'structured_data' => [
+        'enabled' => env('FSP_STRUCTURED_DATA_ENABLED', true),
+        'organization' => [
+            'type' => 'Organization', // e.g. OnlineStore for a shop
+            'legal_name' => null,
+            'alternate_name' => null,
+            'logo_url' => null,       // square, at least 112 px
+            'same_as' => [],          // social profile URLs
+            'email' => null,
+            'telephone' => null,
+            'vat_id' => null,
+            'address' => ['street' => null, 'locality' => null, 'postal_code' => null, 'country' => null],
+        ],
+        // null = no return policy in the markup
+        'return_policy' => null, // ['days' => 14, 'countries' => ['SI', 'DE'], 'fees' => 'FreeReturn', 'method' => 'ReturnByMail']
+    ],
+
+    /**
      * Cross-site transfer behavior.
      */
     'transfer' => [

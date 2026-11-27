@@ -98,6 +98,35 @@ Access context in block component:
 {{ $context['product']->name }}
 ```
 
+# Structured data on the home page (JSON-LD)
+
+The Meta block of the home page (the page with an empty url) outputs one `<script type="application/ld+json">` with `Organization` and `WebSite`. Other pages get none. Configure it in `config/fsp.php`:
+
+```php
+'structured_data' => [
+    'enabled' => env('FSP_STRUCTURED_DATA_ENABLED', true),
+    'organization' => [
+        'type' => 'Organization',   // e.g. OnlineStore for a shop
+        'legal_name' => null,
+        'alternate_name' => null,   // also the WebSite alternateName
+        'logo_url' => null,         // square, at least 112 px; a relative path becomes absolute
+        'same_as' => [],            // social profile URLs
+        'email' => null,
+        'telephone' => null,
+        'vat_id' => null,
+        'address' => ['street' => null, 'locality' => null, 'postal_code' => null, 'country' => null],
+    ],
+    // null = no return policy in the markup
+    'return_policy' => null, // ['days' => 14, 'countries' => ['SI', 'DE'], 'fees' => 'FreeReturn', 'method' => 'ReturnByMail']
+],
+```
+
+- `name` is `fsp.site_name`; without it there is no tag.
+- `url` and `@id` (`<url>#organization`) are the home page of the current site, with its prefix.
+- Empty values are left out. A return policy needs `days` and at least one country; `fees` and `method` are schema.org names (`FreeReturn`, `ReturnFeesCustomerResponsibility`, `ReturnByMail`, `ReturnInStore`, …) or full URLs.
+
+> **With `zoker/shop` installed**, `organization` and `return_policy` come from `shop.structured_data.*` at boot, so fill them in shop. `enabled` stays this package's own switch.
+
 # AI features (translation & SEO)
 
 Powered by the first‑party [`laravel/ai`](https://laravel.com/ai) SDK, **off by default**.

@@ -13,4 +13,5 @@
     <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="{{ $ogLocale }}">
     <meta name="twitter:card" content="summary_large_image">
+    @if($structuredData)<script type="application/ld+json">{!! $structuredData !!}</script>@endif
 @endpush

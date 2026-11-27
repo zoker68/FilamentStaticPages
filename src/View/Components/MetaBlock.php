@@ -21,6 +21,7 @@ use Zoker\FilamentMultisite\Facades\FilamentSiteManager;
 use Zoker\FilamentMultisite\Services\AlternateLinks;
 use Zoker\FilamentStaticPages\Ai\Agents\SeoAgent;
 use Zoker\FilamentStaticPages\Classes\BlockComponent;
+use Zoker\FilamentStaticPages\Support\HomeStructuredData;
 use Zoker\FilamentStaticPages\Support\SeoTitle;
 
 class MetaBlock extends BlockComponent
@@ -151,8 +152,17 @@ class MetaBlock extends BlockComponent
         $this->data['ogImage'] = $this->getSocialImageUrl();
         $this->data['siteName'] = (string) config('fsp.site_name');
         $this->data['ogLocale'] = config('fsp.og_locales.' . app()->getLocale()) ?? app()->getLocale();
+        $this->data['structuredData'] = $this->isHomePage() ? HomeStructuredData::json(multisite_route('index')) : null;
 
         return parent::render();
+    }
+
+    /**
+     * The page served by the "index" route: the one with an empty url.
+     */
+    public function isHomePage(): bool
+    {
+        return $this->page !== null && blank($this->page->url);
     }
 
     /**

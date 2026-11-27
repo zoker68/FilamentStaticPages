@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.10.0 — 2026-11-27
+
+### Upgrading
+
+- **A host with its own copy of `fsp::components.meta-data`** adds `@if($structuredData)<script type="application/ld+json">{!! $structuredData !!}</script>@endif` inside its `@push('meta')`, otherwise the home page gets no JSON-LD.
+
+### Added
+
+- **JSON-LD Organization and WebSite on the home page.** The Meta block of the page with an empty url (the one the `index` route serves) adds one `<script type="application/ld+json">` to its `meta` push, next to the title and Open Graph tags. Search engines and AI search read the site name, logo, social profiles, contacts and return policy from it.
+  - `Organization` (type from the config, e.g. `OnlineStore`): `@id` is `<home url>#organization`, `name` is `fsp.site_name`, `url` is the home page of the current site with its prefix. `logo`, `legalName`, `alternateName`, `sameAs`, `email`, `telephone`, `vatID` and a `PostalAddress` are added when set.
+  - `hasMerchantReturnPolicy` (`MerchantReturnPolicy`, finite return window) when `return_policy` is set with days and countries.
+  - `WebSite` with `name`, `alternateName`, `url` and `publisher` pointing at the organization. There is no `SearchAction`: Google retired the sitelinks search box in 2024.
+  - New config `fsp.structured_data`: `enabled` (`FSP_STRUCTURED_DATA_ENABLED`, on by default), `organization`, `return_policy`. Empty values are left out of the markup. No tag on other pages, with `enabled = false`, or with an empty `fsp.site_name`.
+  - `MetaBlock::isHomePage()`.
+
 ## 2.9.0 — 2026-11-23
 
 ### Upgrading
